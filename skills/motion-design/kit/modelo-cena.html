@@ -1,0 +1,23 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="comum.css"><link rel="stylesheet" href="marca.css"><script src="marca.js"></script>
+<title>NN nome da cena</title><style>
+/* Palco: deitado = <div id="st"> · em pé = class="v" · feed 4:5 = class="q" · transparente (por cima do rosto) = class="alfa", sem #bg.
+   IDs de texto: h1, h2… (t0, t1… são das telas: TELA('t…')). Nomes de variáveis: nunca C, p, eo, eio, back, M, $ (são da base). */
+#bg{position:absolute;inset:0}
+#h1{position:absolute;left:0;right:0;top:80px;text-align:center;font:800 76px var(--m-titulo);letter-spacing:-.04em}
+#h1 .serif{font-size:90px;color:var(--m-cor2)}
+#lg{position:absolute;left:0;right:0;top:420px;display:flex;justify-content:center}
+</style></head><body><div id="st">
+<div id="bg"></div>
+<div id="h1">Frase com <span class="serif">destaque.</span></div>
+<div id="lg"></div>
+<div class="grao"></div>
+</div><script src="comum.js"></script><script>
+$('lg').innerHTML=LOGO(120);
+// tempos = (segundo da palavra na gravação) − (início do clipe); tirar do palavras.json
+cena(5.0,t=>{
+  mesh($('bg'),t,[[cor('cor'),20,25,60],[cor('cor2')+'55',80,70,50]],cor('fundo'));   // fundo que se mexe e combina com o sentido da cena
+  pop($('h1'),t,.3,1e9,{y:40,s:.92});
+  pop($('lg'),t,1.2,1e9,{y:30,s:.8,k:2});
+});
+</script></body></html>

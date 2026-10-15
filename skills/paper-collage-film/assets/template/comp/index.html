@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><title>launch-film composition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Ultra&family=Alfa+Slab+One&family=Bevan&family=Abril+Fatface&family=Anton&family=Bungee&family=Chewy&family=Gluten:wght@700;900&family=Special+Elite&family=Rubik:wght@800;900&family=Cinzel:wght@900&family=Rubik+Spray+Paint&family=Lilita+One&family=Libre+Caslon+Text&family=Permanent+Marker&family=Fraunces:ital,opsz,wght@1,144,900&display=swap" rel="stylesheet">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style></head><body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<!-- order matters: clip list → engine → deco → kit → scenes → runtime -->
+<script>window.FILM_SIZE = [1920, 1080]; /* the collage layouts are drawn for 1920×1080 only — see SKILL.md "Format" */</script>
+<script src="clips.js"></script><script src="engine.js"></script><script src="deco.js"></script><script src="kit.js"></script><script src="collage.js"></script><script src="collage_fx.js"></script><script src="scenes.js"></script><script>window.PALETTE = 'night'; /* palette baked into renders (grade.js); null = original San Diego colours. Pick with scripts/palette_sheet.sh */</script><script src="grade.js"></script><script src="film.js"></script>
+</body></html>

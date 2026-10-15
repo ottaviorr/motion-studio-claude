@@ -1,0 +1,46 @@
+/* motion-design · base das cenas. As cores e fontes vêm do marca.css do projeto (variáveis --m-*); aqui só há valores padrão neutros. */
+:root{
+  --m-fundo:#0b0b10; --m-texto:#f5f5f7; --m-suave:#a1a1aa;
+  --m-cor:#4f46e5; --m-cor2:#a5b4fc; --m-destaque:#f5b84b; --m-ok:#22c55e; --m-alerta:#ef4444;
+  --m-titulo:'Bricolage Grotesque',system-ui,sans-serif; --m-serif:'Instrument Serif',Georgia,serif; --m-ui:Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent;overflow:hidden}
+/* palco: deitado 1920x1080 · em pé class="v" 1080x1920 · transparente class="alfa" (sem fundo, vira .mov com alfa) */
+#st{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:var(--m-ui);color:var(--m-texto);-webkit-font-smoothing:antialiased}
+#st.v{width:1080px;height:1920px}
+#st.q{width:1080px;height:1350px}
+.a{position:absolute}
+.disp{font-family:var(--m-titulo);font-weight:800;letter-spacing:-.04em}
+.serif{font-family:var(--m-serif);font-weight:400;letter-spacing:-.01em}
+.cor{color:var(--m-cor)}.cor2{color:var(--m-cor2)}.destaque{color:var(--m-destaque)}.ok{color:var(--m-ok)}.alerta{color:var(--m-alerta)}
+.w{display:inline-block}
+/* grão de filme por cima de tudo (dá textura e tira o "liso de computador") */
+.grao{position:absolute;inset:0;pointer-events:none;opacity:.10;mix-blend-mode:overlay;z-index:50;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.pill{display:inline-flex;align-items:center;gap:14px;border-radius:999px;padding:14px 28px;font:700 34px var(--m-ui);white-space:nowrap}
+.tag{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:8px 18px;font:800 20px var(--m-ui);letter-spacing:.08em;text-transform:uppercase}
+.card{position:absolute;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:24px;box-shadow:0 40px 90px -30px rgba(0,0,0,.8)}
+/* adesivo (palavra-chave colada sobre a cena) */
+.stk{position:absolute;left:0;top:0;padding:18px 30px;border-radius:22px;font:800 46px var(--m-titulo);letter-spacing:-.03em;color:#0b0d12;background:#fff;white-space:nowrap;box-shadow:0 24px 50px -16px rgba(0,0,0,.6);z-index:9}
+.stk em{font-family:var(--m-serif);font-style:italic;font-weight:400;font-size:1.15em}
+/* painel escuro para quando o motion fica por cima do rosto */
+.vidro{position:absolute;background:rgba(10,10,14,.9);border:1.5px solid rgba(255,255,255,.16);border-radius:28px;box-shadow:0 30px 80px -20px rgba(0,0,0,.65)}
+/* navegador / telas reais */
+.bw{position:absolute;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 50px 110px -30px rgba(0,0,0,.85),0 0 0 1.5px rgba(255,255,255,.08)}
+.bw .bar{height:52px;background:#ECEBF2;display:flex;align-items:center;gap:10px;padding:0 18px}
+.bw .bar i{width:13px;height:13px;border-radius:50%}
+.bw .url{margin-left:14px;flex:1;height:32px;border-radius:16px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 14px;font:500 15px var(--m-ui);color:#4b4b5a;white-space:nowrap;overflow:hidden}
+.bw .pg{position:absolute;left:0;right:0;top:52px;bottom:0;background:#f7f7f9;overflow:hidden}
+.tela{position:absolute;left:0;top:0}
+#cam{position:absolute;left:0;top:0;transform-origin:0 0}
+.spot{position:absolute;border-radius:16px;pointer-events:none;z-index:5}
+.callout{position:absolute;display:flex;align-items:center;gap:14px;padding:16px 26px;border-radius:20px;background:#15151c;border:2px solid var(--m-destaque);font:800 34px var(--m-titulo);letter-spacing:-.02em;color:#fff;white-space:nowrap;box-shadow:0 24px 60px -16px rgba(0,0,0,.8);z-index:9}
+.callout i{width:46px;height:46px;border-radius:50%;background:var(--m-destaque);display:grid;place-items:center;flex-shrink:0}
+.cel{position:absolute;border-radius:64px;background:#0b0b10;padding:16px;box-shadow:0 60px 120px -30px rgba(0,0,0,.7),0 0 0 2px rgba(255,255,255,.08)}
+.cel .tela-cel{position:relative;width:100%;height:100%;border-radius:50px;overflow:hidden;background:#fff}
+.cel .tela-cel img{position:absolute;left:0;top:0;width:100%;display:block}
+.cel .ilha{position:absolute;left:50%;top:30px;width:130px;height:36px;margin-left:-65px;border-radius:20px;background:#000;z-index:3}
+.toast{position:absolute;padding:14px 22px;border-radius:12px;background:#111322;color:#fff;font:600 17px var(--m-ui);white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+/* cursor */
+#cur{position:absolute;left:0;top:0;width:44px;height:44px;z-index:60;filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));pointer-events:none}
+.rip{position:absolute;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:50%;border:5px solid #fff;z-index:59;pointer-events:none;mix-blend-mode:difference}

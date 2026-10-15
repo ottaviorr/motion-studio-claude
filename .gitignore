@@ -1,0 +1,26 @@
+# mídia pesada: fica só na máquina
+*.mp4
+*.mov
+*.mp3
+*.wav
+*.m4a
+entrada/*
+!entrada/.gitkeep
+# prints com dados de clientes
+print_*
+# ferramentas instaladas
+.ferramentas/
+node_modules/
+.venv/
+.DS_Store
+# fotos de revisão (regeráveis)
+revisao/
+revisao-emendas/
+*.mkv
+# Remotion: mídia da pasta public e saídas ficam só na máquina
+**/remotion/public/
+**/remotion/out/
+*.wav
+# atalhos (junctions no Windows) para skills/
+/skill
+/skill-*

@@ -1,0 +1,13 @@
+/* Marca do projeto — copie para a pasta fonte do vídeo e troque os valores. Tudo no kit lê estas variáveis. */
+:root{
+  --m-fundo:#0b0b10;      /* fundo escuro padrão */
+  --m-texto:#f5f5f7;      /* texto sobre fundo escuro */
+  --m-suave:#a1a1aa;      /* texto secundário */
+  --m-cor:#4f46e5;        /* cor principal da marca */
+  --m-cor2:#a5b4fc;       /* cor de apoio (clara) */
+  --m-destaque:#f5b84b;   /* destaque (holofote, preço, palavra-chave) */
+  --m-ok:#22c55e; --m-alerta:#ef4444;
+  --m-titulo:'Bricolage Grotesque',system-ui,sans-serif;   /* títulos pesados */
+  --m-serif:'Instrument Serif',Georgia,serif;              /* palavra-chave em itálico */
+  --m-ui:Inter,system-ui,sans-serif;                       /* interface e textos */
+}

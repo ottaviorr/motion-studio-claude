@@ -1,0 +1,98 @@
+/* Theme A_v03 — cinematic documentary grammar (reference: Instagram reel DeKeXZqp8KL).
+   System fonts only (offline). Palette: paper #f2efe8, ink, ONE orange #ff5a1f, neon red #ff2a3d, white. */
+:root {
+  --paper: #f2efe8; --ink: #111114; --orange: #ff5a1f; --neon: #ff2a3d; --white: #fff;
+  /* A_v15: three families only — keep in sync with src/fonts.js (FONT.sans / FONT.serif / FONT.mono) */
+  --f-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --f-serif: "Didot", "Bodoni 72", "Bodoni Moda", serif;
+  --f-mono: Menlo, "SF Mono", "DejaVu Sans Mono", monospace;
+  --serif: var(--f-serif);
+  --mono: var(--f-mono);
+  --heavy: var(--f-sans);
+  --script: var(--f-serif);
+  --hand: var(--f-serif);
+}
+
+#stage { position: relative; width: 1920px; height: 1440px; overflow: hidden; transform-origin: 0 0; background: #0b0b0d; contain: strict; }
+#stage > canvas, #stage > .plane { position: absolute; left: 0; top: 0; }
+.render-mode #app { display: block !important; }
+.render-mode #transport, .render-mode #side { display: none !important; }
+.render-mode #viewport { padding: 0 !important; display: block !important; }
+.render-mode #frame { box-shadow: none !important; border-radius: 0 !important; }
+.render-mode, .render-mode body { margin: 0; background: #000; overflow: hidden; }
+.plane { pointer-events: none; }
+
+/* ── emphasis type ───────────────────────────────────────────────────── */
+.ty { position: absolute; white-space: nowrap; line-height: 0.95; transform-origin: center; will-change: transform, opacity; }
+.ty span { display: inline-block; }
+.ty-ext span { font-family: var(--heavy); font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em; transform: scaleX(1.22); }
+.ty-ext { color: var(--white); text-shadow: 0 0 18px rgba(255, 255, 255, 0.35), 0 10px 40px rgba(0, 0, 0, 0.55); }
+.ty-neon { font-family: var(--script); font-weight: 700; color: #ffd9dc;
+  text-shadow: 0 0 4px #ff2a3d, 0 0 14px #ff2a3d, 0 0 34px rgba(255, 42, 61, 0.75); }
+.ty-hand { font-family: var(--hand); font-weight: 700; color: var(--white); text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6); }
+.ty-serif { font-family: var(--serif); color: var(--white); text-shadow: 0 6px 30px rgba(0, 0, 0, 0.55); }
+.ty-mono { font-family: var(--mono); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white); }
+.ty-cond span { font-family: var(--f-sans); font-stretch: condensed; font-weight: 900; text-transform: uppercase; letter-spacing: 0.01em; }
+.ty-cond { color: var(--white); text-shadow: 0 4px 0 rgba(0, 0, 0, 0.35), 0 12px 40px rgba(0, 0, 0, 0.55); }
+.ty-wscript { font-family: var(--script); font-weight: 700; color: var(--white); text-shadow: 0 3px 14px rgba(0, 0, 0, 0.6); }
+.ty-flash { font-family: var(--serif); font-style: italic; font-weight: 600; color: var(--white); text-shadow: 0 6px 30px rgba(0, 0, 0, 0.7); }
+.ty-caret { display: inline-block; width: 0.06em; height: 0.9em; margin-left: 0.06em; background: currentColor; vertical-align: -0.08em; }
+.ty-box-ink span { background: var(--ink) !important; color: var(--white) !important; }
+.ty-box span { font-family: var(--heavy); font-weight: 900; text-transform: uppercase; background: var(--white); color: var(--ink); padding: 0.06em 0.22em 0.1em; }
+.ty-arrow { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.ty-arrow path { fill: none; stroke: var(--white); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.5)); }
+
+/* ── captions: tiny mono uppercase on a tight dark box (reference device) ─ */
+#captions { position: absolute; left: 520px; width: 430px; top: 1408px; height: 64px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.mcap { font: 700 30px/1 var(--mono); letter-spacing: 0.04em; color: #fff; background: rgba(10, 10, 12, 0.8); padding: 8px 14px 9px; border-radius: 2px; white-space: nowrap; }
+.mcap .acc { color: var(--orange); }
+.guides-on .mcap.flag { box-shadow: inset 0 -3px 0 rgba(255, 90, 31, 0.9); }
+
+/* ── review overlays (never part of the reel) ─────────────────────────── */
+#guides { display: none; }
+.guides-on #guides { display: block; }
+.gz { position: absolute; box-sizing: border-box; font: 700 18px/1.2 var(--mono); padding: 6px 8px; }
+.gz-ig { background: rgba(255, 0, 80, 0.16); border: 2px dashed rgba(255, 0, 80, 0.7); color: #ffd0de; }
+.gz-band { border: 2px dashed rgba(255, 90, 31, 0.9); color: var(--orange); }
+.gz-face { border: 3px solid rgba(0, 255, 200, 0.9); color: #b7fff0; }
+.gz-mic { border: 3px dashed rgba(0, 200, 255, 0.9); color: #bfefff; }
+.inspect-on .ty { outline: 2px solid rgba(255, 0, 200, 0.75); }
+
+/* ── A_v07: type system from the four new references ─────────────────────────────────────────── */
+:root { --g7: var(--f-sans); --d7: var(--f-serif); --blue7: #2a45ff; --ink7: #111114; }
+/* captions (ref 4): bold white grotesque, words appear one by one, justified lines; italic Didot accents */
+.cap7 { position: absolute; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 0.18em; pointer-events: none; z-index: 6; }
+.cap7-line { display: flex; align-items: baseline; font-family: var(--g7); font-weight: 700; color: #fff; letter-spacing: -0.005em; line-height: 1.05;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55), 0 0 2px rgba(0, 0, 0, 0.35); white-space: nowrap; }
+.cap7-line .acc { font-family: var(--d7); font-style: italic; font-weight: 400; font-size: 1.2em; letter-spacing: 0; }
+.cap7.ink .cap7-line { color: var(--ink7); text-shadow: none; }
+.ty7 { position: absolute; white-space: pre; line-height: 0.95; pointer-events: none; color: #fff; z-index: 5; }
+.ty7 .it { font-family: var(--d7); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.ty7-sans span { font-family: var(--g7); font-weight: 700; letter-spacing: -0.025em; text-shadow: 0 4px 26px rgba(0, 0, 0, 0.45); }
+.ty7-serif span { font-family: var(--d7); font-weight: 400; letter-spacing: -0.01em; text-shadow: 0 0 34px rgba(255, 255, 255, 0.28), 0 2px 18px rgba(0, 0, 0, 0.4); }
+.ty7-ink span, .ty7-ink { color: var(--ink7); }
+.ty7-ink span { text-shadow: none; }
+.ty7-num > span { font-family: var(--d7); font-weight: 400; letter-spacing: -0.03em; line-height: 0.82; text-shadow: 0 0 40px rgba(255, 255, 255, 0.25), 0 3px 22px rgba(0, 0, 0, 0.45); }
+.ty7-sub { font-family: var(--d7); font-style: italic; font-size: 0.2em; margin-top: 0.05em; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6); }
+.ty7-qual { font-family: var(--g7); font-weight: 700; font-size: 0.062em; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 0.9em; opacity: 0.92; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7); }
+.ty7-src { font-family: var(--f-mono); font-size: 0.05em; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.7em; opacity: 0.7; text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7); }
+.ty7-num.ty7-ink > span { text-shadow: none; }
+.ty7-ink .ty7-sub, .ty7-ink .ty7-qual, .ty7-ink .ty7-src { text-shadow: none; }
+.ty7-credit span { font-family: var(--f-mono); font-weight: 500; letter-spacing: 0.08em; color: rgba(255,255,255,0.72); text-shadow: 0 1px 6px rgba(0,0,0,0.8); }
+.ty7-heavy span { font-family: var(--f-sans); font-weight: 800; letter-spacing: -0.035em; text-transform: uppercase; text-shadow: 0 6px 34px rgba(0,0,0,0.5); }
+.ty7-box span { font-family: var(--g7); font-weight: 700; color: #fff; background: var(--blue7); padding: 0.08em 0.3em 0.12em; letter-spacing: -0.01em; }
+.ty7-type span { font-family: var(--f-mono); font-weight: 500; letter-spacing: -0.01em; }
+.ty7-type .ty-caret, .ty7 .ty-caret { display: inline-block; width: 0.06em; height: 0.92em; margin-left: 0.06em; vertical-align: -0.08em; background: currentColor; }
+.ty7 span span { display: inline; }
+.cap7-line .box { background: var(--blue7); padding: 0.06em 0.3em 0.1em; text-shadow: none; }
+
+/* ── A_v15: softer, more alive type ─────────────────────────────────────────────────────────────
+   Motion lives in src/typeLayers.js (soft enter, continuous drift through cuts, posterize-time). Here: lighter shadows
+   (type reads by contrast with the graded picture, not by a dark smear), a shared readability halo for type over busy footage. */
+.ty7 { will-change: transform, opacity, filter; }
+.ty7.soft-halo span { text-shadow: 0 0 22px rgba(0, 0, 0, 0.28), 0 2px 10px rgba(0, 0, 0, 0.32); }
+.ty7 .w { display: inline-block; will-change: transform, opacity, filter; }
+
+/* A single luminous sentence persists across the final question montage. */
+.ty7.reference-line span { color:#f4eedf; font-weight:600; text-shadow:0 0 .12em rgba(255,244,225,.45),0 0 .35em rgba(255,236,210,.18),0 2px 9px rgba(0,0,0,.45); }
+.ty7.reference-line .it { font-weight:400; }

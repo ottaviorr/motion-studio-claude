@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+.venv/
+*.mp4
+*.mov
+
+# material de cliente que não entra nos exemplos
+examples/*/capas/
+examples/*/telas/
+examples/*/prints/
+*.mp3
