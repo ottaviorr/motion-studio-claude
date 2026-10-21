@@ -192,15 +192,15 @@ window.__hvPixels=async function(blocos,a64,b64){
     o.lc=apca(Yapca(...T),Yapca(...F));
   }
   // cores de destaque no quadro inteiro (A): OKLab, croma > 0,07, agrupadas por matiz (24 faixas de 15°)
-  const bins=new Array(24).fill(0), soma=Array.from({length:24},()=>[0,0,0]); let N=0; const cont=new Map();
+  const bins=new Array(0x18).fill(0), soma=Array.from({length:24},()=>[0,0,0]); let N=0; const cont=new Map();
   for(let y=0;y<h;y+=4) for(let x=0;x<w;x+=4){ const j=(y*w+x)*4; N++; const R=LUT[a[j]],G=LUT[a[j+1]],Bl=LUT[a[j+2]];
     const l=Math.cbrt(0.4122214708*R+0.5363325363*G+0.0514459929*Bl), m=Math.cbrt(0.2119034982*R+0.6806995451*G+0.1073969566*Bl), s=Math.cbrt(0.0883024619*R+0.2817188376*G+0.6299787005*Bl);
     const L=0.2104542553*l+0.7936177850*m-0.0040720468*s, A_=1.9779984951*l-2.4285922050*m+0.4505937099*s, B_=0.0259040371*l+0.7827717662*m-0.8086757660*s;
     const C=Math.hypot(A_,B_); if(C<0.07||L<0.2) continue; let hh=Math.atan2(B_,A_)*180/Math.PI; if(hh<0) hh+=360; const k=Math.floor(hh/15)%24; bins[k]++; soma[k][0]+=a[j];soma[k][1]+=a[j+1];soma[k][2]+=a[j+2]; }
-  const lim=N*0.002; const grupos=[]; const usado=new Array(24).fill(false);
+  const lim=N*0.002; const grupos=[]; const usado=new Array(0x18).fill(false);
   for(let k=0;k<24;k++){ if(bins[k]<lim||usado[k]) continue; let ini=k; while(bins[(ini+23)%24]>=lim && !usado[(ini+23)%24] && (ini+23)%24!==k) ini=(ini+23)%24;
     let g={px:0,r:0,g:0,b:0}; let x=ini; do{ usado[x]=true; g.px+=bins[x]; g.r+=soma[x][0]; g.g+=soma[x][1]; g.b+=soma[x][2]; x=(x+1)%24; } while(bins[x]>=lim && !usado[x]);
-    grupos.push({parte:g.px/N,cor:'#'+[g.r,g.g,g.b].map(v=>Math.round(v/g.px).toString(16).padStart(2,'0')).join('')}); }
+    grupos.push({parte:g.px/N,cor:'#'+[g.r,g.g,g.b].map(v=>Math.round(v/g.px).toString(0x10).padStart(2,'0')).join('')}); }
   grupos.sort((x,y)=>y.parte-x.parte);
   return {blocos, cores:grupos.map(g=>({...g,fundo:g.parte>0.35}))};
 };
@@ -261,7 +261,7 @@ else {
 // ---------------------------------------------------------------- 3) regras
 const r1 = (x) => (Math.round(x * 10) / 10).toString().replace(".", ",");
 const r2 = (x) => x.toFixed(2).replace(".", ",");
-const hex = (c) => "#" + c.map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase();
+const hex = (c) => "#" + c.map((v) => v.toString(0x10).padStart(2, "0")).join("").toUpperCase();
 const fora = (bb, r) => Math.max(r[0] - bb[0], bb[2] - r[2], r[1] - bb[1], bb[3] - r[3], 0);
 const cruza = (bb, r) => bb[0] < r[2] && bb[2] > r[0] && bb[1] < r[3] && bb[3] > r[1];
 function julgar(o, papel, P) {
@@ -358,7 +358,7 @@ for (const t of tempos) {
   for (const g of grupos.values()) {
     const o = g[0];
     const txt = g.length > 1 ? g.slice(0, 3).map((x) => `"${x.texto.slice(0, 16)}"`).join(", ") + (g.length > 3 ? "…" : "") : `"${o.texto.length > 34 ? o.texto.slice(0, 33) + "…" : o.texto}"`;
-    say(`  ${o.nivel.padEnd(5)} ${o.papel.padEnd(7)} ${String(Math.round(o.fsMax)).padStart(3)} px ${o.peso} ${o.familia.slice(0, 16).padEnd(16)} ${g.length > 1 ? `×${g.length} ` : ""}${txt}  ${r2(o.wcag)}:1 Lc ${Math.round(Math.abs(o.lc))}  ${hex(o.tinta)}/${hex(o.fundo)}${o.prob.length ? "  → " + o.prob.map((x) => x[1]).join("; ") : ""}`);
+    say(`  ${o.nivel.padEnd(5)} ${o.papel.padEnd(7)} ${String(Math.round(o.fsMax)).padStart(3)} px ${o.peso} ${o.familia.slice(0, 0x10).padEnd(0x10)} ${g.length > 1 ? `×${g.length} ` : ""}${txt}  ${r2(o.wcag)}:1 Lc ${Math.round(Math.abs(o.lc))}  ${hex(o.tinta)}/${hex(o.fundo)}${o.prob.length ? "  → " + o.prob.map((x) => x[1]).join("; ") : ""}`);
   }
   if (uiOk.length) { const mn = Math.min(...uiOk.map((o) => o.fs)); const cmin = Math.min(...uiOk.map((o) => o.wcag)); say(`  OK    UI      ${uiOk.length} textos de interface ok (menor ${Math.round(mn)} px, pior contraste ${r2(cmin)}:1)`); }
   if (!itens.length) say("  (nenhum texto visível)");
@@ -393,7 +393,7 @@ if (runs.length) {
 }
 say(""); say("== Resumo por problema (textos distintos) ==");
 const ordem = [...porProblema.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1));
-for (const [k, set] of ordem) say(`  ${k.padEnd(78).slice(0, 78)} ${String(set.size).padStart(3)}  ex.: ${[...set].slice(0, 3).map((x) => `"${x}"`).join(", ")}`);
+for (const [k, set] of ordem) say(`  ${k.padEnd(0x4e).slice(0, 0x4e)} ${String(set.size).padStart(3)}  ex.: ${[...set].slice(0, 3).map((x) => `"${x}"`).join(", ")}`);
 const nFd = ordem.filter(([k]) => k.startsWith("FALHA")).reduce((s, [, v]) => s + v.size, 0), nAd = ordem.filter(([k]) => k.startsWith("AVISO")).reduce((s, [, v]) => s + v.size, 0);
 resultado.resumo = ordem.map(([k, v]) => ({ problema: k, textos: [...v] }));
 nF = nFd; nA = nAd;

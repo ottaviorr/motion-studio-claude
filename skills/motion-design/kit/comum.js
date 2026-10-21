@@ -31,7 +31,7 @@ function palavras(root,t,T,b=1e9){root.querySelectorAll('.w').forEach((w,i)=>pop
 // degradê em malha que se mexe: cols = [[cor, x%, y%, raio%], ...]; base = cor de fundo
 function mesh(el,t,cols,base,vel=1){el.style.background=cols.map(([c,x,y,r],i)=>{const dx=Math.sin(t*.35*vel+i*1.7)*9,dy=Math.cos(t*.3*vel+i*2.3)*9;return `radial-gradient(${r}% ${r}% at ${(x+dx).toFixed(1)}% ${(y+dy).toFixed(1)}%,${c},transparent 70%)`}).join(',')+','+base;}
 // cor intermediária entre dois hex (#rrggbb)
-function mix(a,b,k){const h=s=>[1,3,5].map(i=>parseInt(s.slice(i,i+2),16));const A=h(a),B=h(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*C(k)).toString(16).padStart(2,'0')).join('');}
+function mix(a,b,k){const h=s=>[1,3,5].map(i=>parseInt(s.slice(i,i+2),16));const A=h(a),B=h(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*C(k)).toString(0x10).padStart(2,'0')).join('');}
 // revela num círculo a partir de (x,y) do elemento
 function wipe(el,t,a,d=.6,x='50%',y='50%'){const k=eio(p(t,a,a+d));el.style.clipPath=k>=1?'none':`circle(${(k*150).toFixed(1)}% at ${x} ${y})`;el.style.visibility=k<=0?'hidden':'visible';}
 

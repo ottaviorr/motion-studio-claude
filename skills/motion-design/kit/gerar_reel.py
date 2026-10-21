@@ -13,6 +13,7 @@ import sys, os, json, glob, shutil, subprocess
 P = os.path.abspath(sys.argv[1]); R = os.path.join(P, 'remotion'); K = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 pub = os.path.join(R, 'public'); os.makedirs(os.path.join(R, 'src'), exist_ok=True); os.makedirs(pub, exist_ok=True)
 shutil.copy(os.path.join(K, 'remotion-reel', 'src', 'reel.tsx'), os.path.join(R, 'src', 'reel.tsx'))
+if not os.path.exists(os.path.join(R, 'remotion.config.ts')): shutil.copy(os.path.join(K, 'remotion-reel', 'remotion.config.ts'), R)   # padrões de render por sistema
 def lufs(p, ss=None, t=None):
     a = ['ffmpeg', '-v', 'info'] + (['-ss', str(ss)] if ss else []) + (['-t', str(t)] if t else []) + ['-i', p, '-af', 'ebur128', '-f', 'null', '-']
     import re; m = re.findall(r'I:\s+(-?[\d.]+) LUFS', subprocess.run(a, capture_output=True, text=True).stderr); return float(m[-1]) if m else -20.0

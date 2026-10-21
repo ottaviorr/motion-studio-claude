@@ -1,5 +1,8 @@
 """Analisa uma trilha: BPM, grade de batidas (fase do bumbo), energia por compasso e drops.
-uso: python batidas.py faixa.mp3 [--json saida.json]"""
+uso: python batidas.py faixa.mp3 [--json saida.json] [--trecho 12.0 40.0] [--bpm 85]
+  --trecho: refina a grade SÓ no trecho que vai ser usado (passo de ~3 ms) — o BPM médio da faixa escorrega até ~130 ms no drop.
+  --bpm: força o BPM (ex.: batida 3-3-2, em que a autocorrelação dá 4/3 do real) e só acha a fase e o período fino.
+  Testado nas 3 faixas do portfólio: sem --trecho 120,215 (real 121,0); com --trecho 5.7 40 → 121,11. Faixa 3-3-2 de 85: leu 113,3; com --bpm 85 → 85,004."""
 import sys, json, subprocess, numpy as np
 f = sys.argv[1]; sr = 22050
 a = np.frombuffer(subprocess.run(['ffmpeg','-v','error','-i',f,'-f','s16le','-ac','1','-ar',str(sr),'-'],capture_output=True).stdout,np.int16).astype(np.float32)/32768
@@ -17,6 +20,8 @@ for bpm in np.arange(70, 180, .05):
     if 95 <= bpm <= 165: sc *= 1.08
     if best is None or sc > best[0]: best = (sc, bpm)
 bpm = best[1]
+op = lambda k: sys.argv[sys.argv.index(k)+1:sys.argv.index(k)+3] if k in sys.argv else None
+if op('--bpm'): bpm = float(op('--bpm')[0])
 # refina o período por ajuste linear dos picos do bumbo e acha a fase
 per = 60/bpm
 def score(ph, per):
@@ -25,7 +30,22 @@ def score(ph, per):
 for _ in range(2):
     phs = np.arange(0, per, 1/fps); ph = phs[np.argmax([score(p, per) for p in phs])]
     pers = per*np.linspace(.995, 1.005, 81); per = pers[np.argmax([score(ph, q) for q in pers])]
+# grade fina no trecho usado: onset do grave com passo de 64 amostras (~2,9 ms), fase e período refinados só ali
+if op('--trecho'):
+    t0, t1 = map(float, op('--trecho')); hf_ = 64; fpf = sr/hf_; nf = len(a)//hf_
+    # grave por janela de 1024 amostras deslizando de 64 em 64 (resolução de tempo fina sem perder o grave)
+    w = 1024; fr = np.lib.stride_tricks.sliding_window_view(a, w)[::hf_]; F = np.abs(np.fft.rfft(fr*np.hanning(w), axis=1)); fqw = np.fft.rfftfreq(w, 1/sr)
+    lg = np.log1p(F[:, fqw < 150].sum(1)); on = np.maximum(0, np.diff(lg, prepend=lg[0])); off = w/2/sr
+    def sc2(ph_, per_):
+        k = np.arange(np.ceil((t0-ph_)/per_), np.floor((t1-ph_)/per_)+1); idx = np.round(((ph_+k*per_)-off)*fpf).astype(int); idx = idx[(idx >= 0) & (idx < len(on))]
+        return on[idx].sum()
+    for _ in range(3):
+        phs = ph + np.arange(-.03, .03, 1/fpf); ph = phs[np.argmax([sc2(p_, per) for p_ in phs])]
+        pers = per*np.linspace(.99, 1.01, 401); per = pers[np.argmax([sc2(ph, q) for q in pers])]
+    ph = ph % per
 bpm = 60/per
+# a autocorrelação não distingue bumbo sincopado (3-3-2) de um tempo mais rápido: deu 113,3 numa faixa de 85 (testado, nenhum critério automático acertou)
+if not op('--bpm'): print(f'confira o bumbo: em batida sincopada (3-3-2) o real costuma ser 3/4 = {bpm*.75:.1f} BPM (aí rode com --bpm)')
 # energia por compasso (dB) e grave por compasso
 bar = 4*per; nb = int((len(a)/sr-ph)//bar)
 E = []; G = []
@@ -39,7 +59,7 @@ punch = float(np.percentile(lowf, 99.5) / (np.median(lowf)+1e-9))
 lu = subprocess.run(['ffmpeg','-v','info','-i',f,'-af','ebur128','-f','null','-'],capture_output=True,text=True).stderr
 import re; I = float(re.findall(r'I:\s+(-?[\d.]+) LUFS', lu)[-1])
 r = {'arquivo': f, 'bpm': round(bpm, 3), 'batida0': round(float(ph), 4), 'compasso': round(bar, 4), 'lufs': I, 'punch': round(punch,1),
-     'drops_compasso': drops, 'drops_s': [round(ph+b*bar, 3) for b in drops], 'energia_db': [round(float(e),1) for e in E],
+     'drops_compasso': drops, 'drops_s': [round(float(ph+b*bar), 3) for b in drops], 'energia_db': [round(float(e),1) for e in E],
      'faixa_dinamica_db': round(float(np.percentile(E,90)-np.percentile(E,10)),1)}
 if '--json' in sys.argv: json.dump(r, open(sys.argv[sys.argv.index('--json')+1],'w'), indent=1)
 print(f"{f}: {r['bpm']} BPM · batida0 {r['batida0']}s · {I} LUFS · punch {r['punch']} · dinâmica {r['faixa_dinamica_db']} dB · drops {r['drops_s']}")

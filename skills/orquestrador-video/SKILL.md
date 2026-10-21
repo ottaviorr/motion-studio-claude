@@ -18,9 +18,10 @@ Leia o `CLAUDE.md` do estúdio, `skill/reference/nivel.md`, as últimas linhas d
 | Diretor de arte | skill **direcao-de-arte** | cartão de direção por peça (`ESTILOS.md`) + 1 styleframe por peça |
 | Produtor de cenas | subagente com a skill **motion-design** | cenas `.html` + folha de conferência + cenas gravadas |
 | Editor | skill **edicao-video** | quando a entrada é uma gravação (cortes, zoom, narrativa); ela chama a motion-design |
+| Acabamentos de estilo | **editorial-film-edit** (editorial de arquivo sobre a gravação já cortada: grão, P&B, tipo de revista, split) e **paper-collage-film** (filme de colagem de papel rasgado, vinheta/promo 16:9) | quando o cartão de direção escolhe esses estilos; seguem o mesmo padrão técnico e passam pela mesma revisão |
 | Montador | você ou 1 agente, **em fila** | vídeo final (`kit/gerar_reel.py` / Remotion), um por vez |
 | Revisor | subagente **novo, sem contexto da produção**, com **revisao-video** + **hierarquia-visual** | veredito com números e fotos |
-| Dono | aprova nos portões | "sim", ajustes consolidados, reação final |
+| Dono (o dono) | aprova nos portões | "sim", ajustes consolidados, reação final |
 
 Por que separar quem faz de quem revisa: um revisor que não viu a produção não herda as desculpas dela. A Cognition mediu isso em revisão de código (o revisor sem contexto compartilhado acha mais erro) e a Anthropic usa o mesmo padrão (gerador + avaliador).
 
@@ -40,7 +41,10 @@ Mais agente não é mais qualidade. Paralelize só depois que as decisões que t
 Cada portão tem: o que mostrar ao dono, o que ele aprova e o que fica **travado**. Checklist completa em `references/portoes.md`.
 
 ### P0 — Briefing (você, sem dono se o pedido já for claro)
-Escreva `BRIEFING.md` no projeto (crie com `bash novo-projeto.sh <marca> <nome>`): quantidade, formato (9:16, 16:9, 4:5), duração (reels até 1min30), destino (Reels, YouTube, anúncio), marca e regras (`MARCA.regras`, preços oficiais, o que não pode prometer), voz (ElevenLabs? quem gera?), música, legenda (só se pedir), isca/CTA, padrão técnico (resolução, fps, bitrate, LUFS), prazo. Faltou algo que muda o trabalho? Pergunte **tudo de uma vez**, em lista curta. Marca nova: siga o CLAUDE.md (pasta da marca antes de tudo).
+Escreva `BRIEFING.md` no projeto (crie com `bash novo-projeto.sh <marca> <nome>`): quantidade, formato (9:16, 16:9, 4:5), duração (reels até 1min30), destino (Reels, YouTube, anúncio), marca e regras (`MARCA.regras`, preços oficiais, o que não pode prometer), voz (ElevenLabs? quem gera?), música, legenda (só se pedir), isca/CTA, padrão técnico (resolução, fps, bitrate, LUFS), prazo. **Padrão do dono para vídeo editado: 1080p, 30 qps, bitrate alto em CBR** (seção 3.1); 4K ou 60 qps só se ele pedir para a peça. Faltou algo que muda o trabalho? Pergunte **tudo de uma vez**, em lista curta. Marca nova: siga o CLAUDE.md (pasta da marca antes de tudo).
+
+### 3.1 Padrão técnico do estúdio (regra do dono)
+Todo vídeo editado sai em **1920×1080 (ou 1080×1920), 30 qps, H.264 High em CBR de 20 Mb/s** (`nal-hrd=cbr`, minrate = maxrate; média sozinha deu 7,7 Mb/s), BT.709, AAC 320 kb/s 48 kHz, `+faststart`, -14 LUFS e pico ≤ -1 dBFS. 4K ou 60 qps só quando o dono pedir para aquela peça (o 4K60 deixava o render ~8× mais lento). Esse padrão vai no `BRIEFING.md`, no contrato de cada agente (item 7) e no `formato` do `workflow-serie.js`; o revisor mede no arquivo final.
 
 ### P1 — Pauta e roteiro (dono aprova)
 `ROTEIROS.md` com tabela-resumo (nº, tipo, gancho do 1º segundo, duração, isca) + roteiro por peça (texto na tela e o que acontece por frase) e `VOZES.md` com **todos** os textos de voz de uma vez, grafias de pronúncia ("líd", "fólou-ap") e o nome de arquivo esperado (`reel-NN.mp3` em `entrada/`).
@@ -52,7 +56,7 @@ Rode a skill **direcao-de-arte**: um cartão por peça (paleta com UM destaque, 
 
 ### P3 — Piloto (dono aprova)
 Faça **uma peça inteira** até o arquivo final, de preferência a mais representativa (a que usa o kit, a voz e a música). Ela fixa o **padrão técnico** que os agentes vão copiar: mixagem (música ~21 dB abaixo da voz, `gerar_reel.py` mede), -14 LUFS, pico ≤ -1 dBFS, CBR do bitrate pedido, fontes locais (`base/fontes/` + `@font-face`), zona segura, fecho, nomes de arquivo. Rode a revisão completa no piloto antes de mostrar.
-**Trava:** padrão técnico e de acabamento. O que o dono disser no piloto vira regra no briefing de todos os agentes (na série de exemplo, "variar mais, sem roxo, sem ícones redondinhos, mais fundo claro" veio daqui e mudou o `ESTILOS.md` antes da produção — muito mais barato do que depois).
+**Trava:** padrão técnico e de acabamento. O que o dono disser no piloto vira regra no briefing de todos os agentes (no cliente A, "variar mais, sem roxo, sem ícones redondinhos, mais fundo claro" veio daqui e mudou o `ESTILOS.md` antes da produção — muito mais barato do que depois).
 
 ### P4 — Produção (sem dono; você coordena)
 Antes de disparar: os arquivos compartilhados prontos e congelados (seção 4), um briefing por agente (`references/briefing-agente.md`), o plano de grupos e a fila de render. Dispare (Agent ou Workflow). Enquanto rodam, não edite nada que eles leem.
@@ -83,11 +87,11 @@ Use o modelo `references/briefing-agente.md`. Campos obrigatórios, todos no pro
 
 1. **Missão e peças**: quais (ex.: 05, 06, 07) e o objetivo de cada uma em uma frase.
 2. **O que ler**: caminhos exatos (skills, `nivel.md`, `armadilhas.md`, doutrina de movimento, `ESTILOS.md` na seção da peça, `VOZES.md`, kit, piloto, regras da marca).
-3. **Arquivos que pode criar** — nomes **exatos** (`r05-estilo.css`, `r05a-<nome>.html`, `r05b-fecho.html`, `cenas/r05a-<nome>.mp4`, `reels/05.json`). Na série de exemplo, sem nome exato saiu `r08-a-terminal` ao lado de `r08a-…`.
+3. **Arquivos que pode criar** — nomes **exatos** (`r05-estilo.css`, `r05a-<nome>.html`, `r05b-fecho.html`, `cenas/r05a-<nome>.mp4`, `reels/05.json`). No cliente A, sem nome exato saiu `r08-a-terminal` ao lado de `r08a-…`.
 4. **O que NÃO pode tocar**: kit, marca, arquivos compartilhados, peças dos outros, git, montagem final.
-5. **Scratchpad próprio**: `<scratchpad>/<prefixo-da-peça>/` para fotos e rascunhos. Na série de exemplo dois agentes escreveram no mesmo caminho e um apagou o do outro.
+5. **Scratchpad próprio**: `<scratchpad>/<prefixo-da-peça>/` para fotos e rascunhos. No cliente A dois agentes escreveram no mesmo caminho e um apagou o do outro.
 6. **Render em fila**: uma gravação por vez **no computador inteiro**, não por agente (5 agentes "um por vez" = 5 ao mesmo tempo). O `kit/hf.mjs` e o `kit/gerar_reel.py` já esperam a vez sozinhos (trava global em `~/.cache/motion-studio-fila-render`); outros renders pesados (Remotion direto, `render.py`) devem passar pela fase em fila do Workflow.
-7. **Padrões técnicos** do piloto (fps, resolução, crf/bitrate, fontes locais, zona segura).
+7. **Padrões técnicos** do piloto (1080p30 CBR 20 Mb/s salvo pedido, fontes locais, zona segura).
 8. **Conferência própria obrigatória** (folha com ≥ 12 tempos por cena principal, incluindo cada palavra-chave; um quadro de cada MP4; duração com `ffprobe`).
 9. **Formato da resposta**: arquivos criados, duração de cada cena, caminho da folha que olhou, problemas e lições. Com Workflow, use `schema` e devolva objeto.
 10. **Critério de pronto**: o que precisa existir no disco. Você confere os arquivos, não só a mensagem (o HyperFrames manda fazer igual: o artefato no disco é a prova).
@@ -100,7 +104,7 @@ Divida **por peça** (cada agente leva suas peças do HTML à cena gravada) e **
 |---|---|
 | Fala | transcrição do final bate com `VOZES.md`; voz inteira, sem corte |
 | Mixagem | -14 LUFS (Reels) ±1; pico ≤ -1 dBFS; voz − música ≈ 18–21 dB (trecho com voz × fecho só com música) |
-| Imagem | resolução e fps pedidos; bitrate medido ≥ o pedido (CBR); sem quadro preto no começo |
+| Imagem | 1080p e 30 qps (ou o que o dono pediu para a peça); bitrate medido ≥ o pedido (CBR 20 Mb/s); sem quadro preto no começo |
 | Sincronia | cada título/troca cai na palavra certa (confira os `W()` de palavra curta ou repetida — usar índice da ocorrência) |
 | Fontes | as fontes do cartão aparecem nas fotos (nada de serif genérica) |
 | Legibilidade e hierarquia | skill **hierarquia-visual** na folha: uma leitura por tela, título ≥ 84 px em 9:16, ≤ 3–4 palavras, contraste |
@@ -148,3 +152,18 @@ O revisor **não edita** nada. Só lê, mede e devolve o veredito com evidência
 - `references/briefing-agente.md` — prompt-modelo para subagente de produção e para o revisor independente.
 - `references/workflow-serie.js` — script de Workflow para N peças: produção em paralelo, gravação/montagem em fila, QA independente, até 2 voltas de correção.
 - `references/entrega-modelo.md` — modelo de `ENTREGA.md`.
+
+## 10. Modo leve (máquina e tokens), sem perder qualidade
+Origem: o dono, em 17/10/2026, disse "meus tokens foram sugados" e "o computador travou de tanto que o aplicativo tá pesado". Ele usa um MacBook Air M4 sem ventoinha, com 16 GB.
+
+| O que pesava | Regra |
+|---|---|
+| 3–8 agentes gravando, fotografando e recortando juntos | **No máximo 2 agentes de produção ao mesmo tempo** nesta máquina. Pesquisa só de leitura pode ser 3–4. Mais peças = cada agente faz 2–3 em sequência (reaproveita o que já leu). |
+| `hf.mjs` com 8 Chromes | Padrão 4 workers + `nice 10`: mesma imagem (SSIM 0,999 medido), ~1,5× mais lento, e o computador não trava. `HF_WORKERS=8` só com a máquina livre. |
+| `fotos.sh` abria um Chrome por tempo pedido | No máximo 3 por vez (`FOTOS_P`). |
+| Cada agente lia ~150 mil caracteres (plano inteiro, cardápio inteiro, 7 pesquisas) | **Cartão enxuto por peça** (ex.: `moldes/cartao.py` → `NN-slug/CARTAO-v3.md`, com a linha do plano e só as fichas citadas). As regras das pesquisas entram no `nivel.md`, no cardápio e no contrato; o produtor não relê a pesquisa crua. |
+| Relatórios longos repassados inteiros | Resposta do agente em até 250 palavras (números, caminhos, decisões). O detalhe fica no `NOTAS.md`. O diretor confere uma folha reduzida por peça. |
+| Conversa gigante (centenas de imagens) deixa a extensão do VS Code pesada | Ao fechar uma fase, escrever um `ESTADO.md` de passagem e sugerir ao dono abrir uma conversa nova. |
+| Imagens grandes lidas várias vezes | Folhas reduzidas (até ~1600 px); tamanho real só para conferir um detalhe. |
+
+Nada disso troca modelo, corta etapa de conferência ou reduz resolução, fps ou bitrate da entrega.

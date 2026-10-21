@@ -7,7 +7,7 @@ Serve para motions por cima de vídeo gravado (talking head), anúncios curtos, 
 ## Instalar
 
 ```bash
-git clone https://github.com/<seu-usuario>/<este-repositorio> ~/.claude/skills/motion-design
+git clone https://github.com/<seu-usuario>/motion-design-skill ~/.claude/skills/motion-design
 ```
 
 Depois, no Claude Code, peça um vídeo ("faz os motions do meu vídeo", "uma VSL mostrando meu sistema") ou rode `/motion-design`.
@@ -24,7 +24,6 @@ Depois, no Claude Code, peça um vídeo ("faz os motions do meu vídeo", "uma VS
 - `SKILL.md`: o que a skill faz e qual modo usar.
 - `reference/nivel.md`: o acabamento mínimo de cada vídeo.
 - `reference/vsl-produto.md`: o método da VSL de produto (roteiro, réplica do app, ressincronia com a voz, transições).
-- `examples/`: começa vazia; cada vídeo que subir o nível vira um exemplo enxuto aqui (ciclo de aprendizado).
 - `reference/historico.md`: todos os vídeos feitos com a skill e o que cada um trouxe. A skill se atualiza e faz commit a cada vídeo entregue ("Ciclo de aprendizado" no `SKILL.md`).
 
 O motor narrado (`engine/`) é derivado do motion-broll de Bart, sob licença MIT (`LICENSE-motion-broll.txt`).

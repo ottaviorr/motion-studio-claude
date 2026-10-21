@@ -6,7 +6,8 @@ Uso:
 
 Lê os blocos ```cartao``` (modelo em assets/cartao-direcao.md). Se não houver
 nenhum, tenta a tabela-resumo do ESTILOS.md (colunas com 3 hex "fundo · tinta ·
-destaque" e "título / apoio / número"), como no modelo assets/estilos-serie-modelo.md.
+destaque" e "título / apoio / número"), como no modelo assets/estilos-serie-modelo.md
+e em numa série aprovada salva em examples/ da motion-design.
 
 Aponta:
   - % de fundos claros (meta >= 60 %, preferência do dono) e dois escuros seguidos
@@ -14,7 +15,12 @@ Aponta:
     mesmo estilo, mesma corrente, destaque de matiz parecida
   - fontes da lista de "padrão de IA" (HyperFrames typography.md) — só aviso
   - contraste tinta/fundo (< 4,5 bloqueia, < 7 avisa) e destaque/fundo < 3 (WCAG)
-Saída 0 = nada bloqueante; 1 = há problema bloqueante (escuros seguidos, contraste ruim).
+  - repertório (chaves linguagem/familia/video/fechamento/canal/verbo do cartão):
+    vizinhos com a mesma linguagem ou o mesmo fechamento (bloqueia), 3 seguidas
+    na mesma família (bloqueia), WhatsApp em > 3 peças (bloqueia), verbo > 2 vezes,
+    faixa de % de vídeo estreita (série-vitrine: de <= 20 até >= 80)
+Saída 0 = nada bloqueante; 1 = há problema bloqueante (escuros seguidos, contraste ruim,
+linguagem/fechamento repetido no vizinho, WhatsApp demais).
 Só biblioteca padrão.
 """
 import colorsys
@@ -69,6 +75,7 @@ def ler_cartoes(texto):
         for linha in bloco.splitlines():
             if ":" in linha:
                 k, v = linha.split(":", 1)
+                v = re.sub(r"\s+#.*$", "", v)  # comentário no fim da linha
                 c[k.strip().lower()] = v.strip().strip('"').strip("'")
         if c.get("fundo", "").startswith("#") and len(c.get("fundo", "")) >= 4:
             cards.append(c)
@@ -166,7 +173,64 @@ def main(arquivos):
             achou = True
     if not achou:
         print("  ✅ nenhum vizinho repetido")
+
+    if any(c.get("linguagem") or c.get("fechamento") for c in cards):
+        bloqueia = repertorio(cards) or bloqueia
     return 1 if bloqueia else 0
+
+
+def codigo(v):
+    m = re.match(r"\s*([LF]\d+)", v or "", re.I)
+    return m.group(1).upper() if m else (v or "").strip().lower()
+
+
+def repertorio(cards):
+    """Série = vitrine de repertório (SKILL.md Parte B, cardapio-linguagens.md, fechamentos.md)."""
+    ruim = False
+    print("\nRepertório (linguagem · fechamento · canal):")
+    for c in cards:
+        print(f"  {c.get('peca',''):>5}  {c.get('linguagem','—'):6} {c.get('familia','—'):4} "
+              f"vídeo {c.get('video','—'):>3} %  {c.get('fechamento','—'):5} {c.get('canal','—')} · {c.get('verbo','—')}")
+    for i in range(1, len(cards)):
+        a, b = cards[i - 1], cards[i]
+        par = f"{a.get('peca','')}→{b.get('peca','')}"
+        for chave, nome in (("linguagem", "mesma linguagem"), ("fechamento", "mesmo fechamento")):
+            if a.get(chave) and codigo(a[chave]) == codigo(b.get(chave)):
+                print(f"  ⛔ {par}: {nome} ({b[chave]})")
+                ruim = True
+    for i in range(2, len(cards)):
+        f = [cards[j].get("familia", "").upper() for j in (i - 2, i - 1, i)]
+        if f[0] and f[0] == f[1] == f[2]:
+            print(f"  ⛔ {cards[i-2].get('peca','')}–{cards[i].get('peca','')}: 3 seguidas na família {f[0]}")
+            ruim = True
+    zap = [c.get("peca", "") for c in cards if "whats" in (c.get("canal", "") + c.get("verbo", "")).lower()]
+    if len(zap) > 3:
+        print(f"  ⛔ WhatsApp em {len(zap)} peças ({', '.join(zap)}): máximo 2–3, de formas diferentes")
+        ruim = True
+    elif zap:
+        print(f"  ✅ WhatsApp em {len(zap)} peça(s): {', '.join(zap)} (confira se as formas diferem: botão, notificação, conversa)")
+    verbos = {}
+    for c in cards:
+        v = c.get("verbo", "").strip().lower()
+        if v:
+            verbos[v] = verbos.get(v, 0) + 1
+    for v, n in verbos.items():
+        if n > 2:
+            print(f"  ⚠️ verbo '{v}' em {n} peças (máximo 2)")
+    vids = []
+    for c in cards:
+        try:
+            vids.append(float(c.get("video", "").replace("%", "").split("/")[0]))
+        except ValueError:
+            pass
+    if len(vids) >= 6 and (min(vids) > 20 or max(vids) < 80):
+        print(f"  ⚠️ % de vídeo de {min(vids):.0f} a {max(vids):.0f}: a série-vitrine deve ir de <= 20 até >= 80")
+    fams = {c.get("familia", "").upper() for c in cards if c.get("familia")}
+    if len(cards) >= 6 and fams and len(fams) < 5:
+        print(f"  ⚠️ só {len(fams)} famílias ({', '.join(sorted(fams))}): meta, todas as 6 (V V+ M D 3D F) numa série de 6+")
+    if not ruim:
+        print("  ✅ nenhuma linguagem ou fechamento repetido no vizinho")
+    return ruim
 
 
 if __name__ == "__main__":

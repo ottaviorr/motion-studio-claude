@@ -1,6 +1,6 @@
 # Tipografia para vídeo (referência)
 
-Pesquisa de 2026-10-08. Números resumidos em `tabela-numeros.md`; aqui está o porquê e o como fazer no HTML das cenas.
+Pesquisa de 08/10/2026. Números resumidos em `tabela-numeros.md`; aqui está o porquê e o como fazer no HTML das cenas.
 
 ## 1. Escala: poucos degraus, saltos grandes
 

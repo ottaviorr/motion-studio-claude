@@ -1,5 +1,5 @@
 """Onde a tela mexe, a cada 1/4 s (para acelerar trechos sem fala e para o zoom seguir a ação).
-uso: python atividade.py bruto.mp4 atividade.json [--camera x,y,w,h]
+uso: python atividade.py bruto.mp4 atividade.json [--camera x,y,w,h [--camera x,y,w,h ...]]  (câmera que muda de canto: um --camera por lugar)
 Saída: {fps, diff:[fração de pixels que mudaram], caixa:[[x0,y0,x1,y1] em 0–1 ou null]}
 A câmera do apresentador (retângulo em pixels do vídeo) fica de fora da conta."""
 import sys, subprocess, json
@@ -13,8 +13,9 @@ raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', arq, '-vf', f'fps={F},scale
                      capture_output=True).stdout
 v = np.frombuffer(raw, np.uint8).reshape(-1, H, W).astype(np.int16)
 m = np.ones((H, W), bool)
-if '--camera' in a:
-    x, y, w, h = map(int, a[a.index('--camera') + 1].split(','))
+for i_, k_ in enumerate(a):
+    if k_ != '--camera': continue
+    x, y, w, h = map(int, a[i_ + 1].split(','))
     m[int(y / VH * H) - 2:int((y + h) / VH * H) + 2, max(0, int(x / VW * W) - 2):int((x + w) / VW * W) + 2] = False
 diff, caixa = [0.0], [None]
 for i in range(1, len(v)):

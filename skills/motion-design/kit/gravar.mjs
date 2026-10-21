@@ -24,7 +24,7 @@ const dir = fs.mkdtempSync(path.join(os.tmpdir(), "cena-"));
 const ch = spawn(CHROME, ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${dir}/perfil`, "--hide-scrollbars", "--window-size=1920,1920", "about:blank"], { stdio: "ignore" });
 // porta 0: o Chrome escolhe uma livre e anota no DevToolsActivePort (com porta sorteada, dois gravadores ao mesmo tempo podiam cair no mesmo Chrome)
 let alvo, porta;
-for (let i = 0; i < 60 && !alvo; i++) { await new Promise((r) => setTimeout(r, 200)); try { porta ??= fs.readFileSync(`${dir}/perfil/DevToolsActivePort`, "utf8").split("\n")[0]; alvo = (await (await fetch(`http://127.0.0.1:${porta}/json`)).json()).find((t) => t.type === "page")?.webSocketDebuggerUrl; } catch {} }
+for (let i = 0; i < 240 && !alvo; i++) { await new Promise((r) => setTimeout(r, 50)); try { porta ??= fs.readFileSync(`${dir}/perfil/DevToolsActivePort`, "utf8").split("\n")[0]; alvo = (await (await fetch(`http://127.0.0.1:${porta}/json`)).json()).find((t) => t.type === "page")?.webSocketDebuggerUrl; } catch {} }
 const ws = new WebSocket(alvo); await new Promise((ok) => (ws.onopen = ok));
 let id = 0; const esp = new Map(), erros = [];
 ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.method === "Runtime.exceptionThrown") erros.push(m.params.exceptionDetails.exception?.description); if (m.id && esp.has(m.id)) { esp.get(m.id)(m); esp.delete(m.id); } };
@@ -32,10 +32,12 @@ const cdp = (method, params = {}) => new Promise((ok) => { const i = ++id; esp.s
 const ev = async (expr) => (await cdp("Runtime.evaluate", { expression: expr, awaitPromise: true, returnByValue: true })).result?.result?.value;
 await cdp("Page.enable"); await cdp("Runtime.enable");
 await cdp("Page.navigate", { url: "file://" + html });
-await new Promise((r) => setTimeout(r, 1500));
-await ev("document.fonts.ready.then(()=>new Promise(r=>setTimeout(r,800)))");
+// espera a página carregar de verdade (antes: 1,5 s fixos) e as fontes; só lendo a duração não precisa da folga de 0,8 s
+for (let i = 0; i < 100 && !(await ev("location.protocol==='file:'&&document.readyState==='complete'")); i++) await new Promise((r) => setTimeout(r, 50));
+const soDur = process.argv.includes("--dur");
+await ev(`document.fonts.ready.then(()=>new Promise(r=>setTimeout(r,${soDur ? 50 : 800})))`);
 const W = await ev("document.getElementById('st').offsetWidth"), H = await ev("document.getElementById('st').offsetHeight");
-if (process.argv.includes("--dur")) { console.log(JSON.stringify({ dur: await ev("window.DUR"), w: W, h: H, erros })); ws.close(); ch.kill(); await new Promise((r) => setTimeout(r, 500)); try { fs.rmSync(dir, { recursive: true, force: true }); } catch {} process.exit(0); }
+if (soDur) { console.log(JSON.stringify({ dur: await ev("window.DUR"), w: W, h: H, erros })); ws.close(); ch.kill(); await new Promise((r) => setTimeout(r, 100)); try { fs.rmSync(dir, { recursive: true, force: true }); } catch {} process.exit(0); }
 await cdp("Emulation.setDeviceMetricsOverride", { width: W, height: H, deviceScaleFactor: escala, mobile: false });
 if (alfa) await cdp("Emulation.setDefaultBackgroundColorOverride", { color: { r: 0, g: 0, b: 0, a: 0 } });
 const ext = alfa ? "png" : "jpg";

@@ -1,6 +1,6 @@
 # Relatório: skill "hierarquia-visual"
 
-Data: 2026-10-08. Pasta: `.ferramentas/pesquisa-skills/hierarquia-visual/` (nada fora dela foi editado; nada foi commitado).
+Data: 08/10/2026. Pasta: `.ferramentas/pesquisa-skills/hierarquia-visual/` (nada fora dela foi editado; nada foi commitado).
 
 ## O que foi entregue
 
@@ -12,7 +12,7 @@ Data: 2026-10-08. Pasta: `.ferramentas/pesquisa-skills/hierarquia-visual/` (nada
 | `references/tipografia.md` | escala, altura-x, peso, entrelinha, tracking, quebra de linha, CSS pronto |
 | `references/cor.md` | fundo · tinta · um destaque, como escolher o destaque, cor semântica, daltonismo, WCAG e APCA (fórmulas) |
 | `references/leitura-em-video.md` | tempo de leitura, quantidade de texto, o que o olho lê primeiro, movimento como hierarquia, zoom de UI, grid |
-| `teste/` | cópias das cenas e arquivos da base (r02, r03, r09, r10 do projeto de exemplo e a cena deitada da padaria), uma cena sintética com valores conhecidos, os relatórios `.txt`/`.json` e as folhas de fotos `fotos-*/folha.jpg` |
+| `teste/` | cópias das cenas e arquivos da base (r02, r03, r09, r10 do projeto cliente A e a cena deitada da padaria), uma cena sintética com valores conhecidos, os relatórios `.txt`/`.json` e as folhas de fotos `fotos-*/folha.jpg` |
 
 Para instalar: copiar a pasta para `~/.claude/skills/hierarquia-visual/` (sem a pasta `teste/`).
 
@@ -43,7 +43,7 @@ Ficou sem fonte primária, e por isso está marcado como decisão do estúdio:
 6. **Zona segura do destino, em números.** Reels orgânico: y 220–1540, sem nada em x > 930 a partir de y 700. Anúncio Meta: x 65–1015, y 269–1248. Uma peça para as três plataformas: x 65–888, y 288–1248. 16:9: 96/54 px das bordas.
 7. **Tempo de tela = máx(1 s; 0,5 s + 0,33 s × palavras).** Texto de oferta ou de condição pede ≥ 2 s + 0,2 s por palavra.
 8. **Título com 3–4 palavras (máx. 6), 2–4 por linha, até 3 linhas, quebrado pelo sentido.** Não deixe palavra sozinha na última linha. Fora de UI, ≤ 15 palavras na tela ao mesmo tempo; acima de 25 é falha.
-9. **UI precisa de zoom = 30 ÷ tamanho do texto da UI.** No kit de telas (UI de 20–23 px), isso dá 1,3–1,5×. A janela inteira só aparece por menos de 1 s, como mapa.
+9. **UI precisa de zoom = 30 ÷ tamanho do texto da UI.** No kit cliente A (UI de 20–23 px), isso dá 1,3–1,5×. A janela inteira só aparece por menos de 1 s, como mapa.
 10. **A ordem de entrada é a ordem de leitura.** O que puxa o olho é o início do movimento. Só uma coisa começa a se mexer por vez, no ponto que importa: o título primeiro, o apoio 0,2–0,4 s depois, o detalhe por último. Elementos do mesmo grupo entram iguais (destino comum).
 
 ## A ferramenta: `scripts/conferir_hierarquia.mjs`
@@ -78,7 +78,7 @@ Leva ~7 s por cena de 35–45 s.
 - Texto em x 950: FALHA (fora da zona).
 - Texto que aparece de 0,6 s a 1,0 s: "ficou 0,4 s, precisa de 1,2 s", FALHA.
 
-**4 cenas reais aprovadas da série de exemplo** (cópias em `teste/cenas/`) e **1 cena 16:9** (`teste/deitada/`):
+**4 cenas reais aprovadas da série cliente A** (cópias em `teste/cenas/`) e **1 cena 16:9** (`teste/deitada/`):
 
 | Cena | Falhas (textos distintos) | Avisos | Textos com tempo suficiente | Principais achados |
 |---|---|---|---|---|

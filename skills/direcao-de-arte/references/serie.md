@@ -11,12 +11,14 @@ O problema: 15 reels iguais cansam o feed (o dono pediu para variar); 15 reels s
 | Camada | Fixo na série | Muda por peça |
 |---|---|---|
 | Marca | Logo, nome, grafia, regras de texto (`MARCA.regras`), preços oficiais | Cor da marca vira papel diferente (destaque, tinta, virada, fecho) |
-| Estrutura | Gancho no 1º segundo, uma frase por cena, fecho com CTA na mesma posição | O que acontece dentro de cada cena |
+| Estrutura | Gancho no 1º segundo, uma frase por cena; fecho com CTA na mesma posição **só em série de uma marca** | O que acontece dentro de cada cena; em série-vitrine também a **linguagem** (`cardapio-linguagens.md`), o **fechamento e o CTA** (`fechamentos.md`) |
 | Técnica | Formato, fps, CBR, -14 LUFS, zona segura, tamanho mínimo de letra | — |
 | Voz e som | Narrador, nível da música (≈ 21 dB abaixo da voz) | A trilha |
 | Visual | **Uma regra de série** (ex.: "sempre um único destaque de cor", "o produto sempre aparece real em algum momento") | Paleta, fontes, textura/material, ícones, como o produto aparece, movimento, corrente |
 
 Quanto mais forte o núcleo fixo de estrutura (fecho, CTA, gancho), mais a parte visual pode variar sem a série se perder.
+
+**Série-vitrine** (amostras de nichos diferentes, prospecção, portfólio): o objetivo é mostrar repertório, então o núcleo encolhe para a qualidade técnica e o rodapé (@, "imagens ilustrativas"). Linguagem, % de vídeo, fechamento e CTA viram variáveis com regra de vizinho (SKILL.md, Parte B). Foi o erro da v2 da prospecção: a série variou a fonte e repetiu a linguagem e o fecho nas 14.
 
 ## 2. Eixos de variação (gire pelo menos 3 entre vizinhos)
 
@@ -26,7 +28,7 @@ Quanto mais forte o núcleo fixo de estrutura (fecho, CTA, gancho), mais a parte
 4. **Material:** liso / papel / impresso (halftone, riso) / técnico (grade, blueprint) / tela (terminal, painel).
 5. **Como o produto aparece:** tela real em camadas / objeto (celular, cupom) / metáfora (planta, mapa) / redesenhado (grade, caderno).
 6. **Movimento:** corrente (esquerda / cima / Z) e assinatura (forma única, traço desenhado, flip, impressão, dobra).
-7. **Ritmo:** 60 fps liso / 15 fps "em dois" / batida.
+7. **Ritmo:** 30 qps liso / 12–15 desenhos/s "em dois" / batida.
 
 ## 3. Regras de vizinhança
 
@@ -36,16 +38,18 @@ Quanto mais forte o núcleo fixo de estrutura (fecho, CTA, gancho), mais a parte
 - Mesmo conjunto de ícones: nunca em vizinhos; o ícone-app redondinho colorido não volta.
 - Mesma assinatura de movimento: no máximo 2 vezes na série.
 
+- Mesma linguagem do cardápio ou mesmo fechamento: nunca em vizinhos; 3 seguidas na mesma família (V · V+ · M · D · 3D · F): proibido.
+
 Confira com `scripts/conferir-serie.py ESTILOS.md`.
 
 ## 4. Como produzir sem custo dobrado
 
-- **Kit de telas re-tematizável:** as réplicas do produto num só arquivo (`produto-ui.css/js`) com variáveis (`--ui-brand`, `--ui-paper`, `--ui-ink`, `--ui-line`…). Cada peça tem `estilo-NN.css` que sobrescreve variáveis, sombras, bordas e a fonte de interface. Variar estilo = trocar CSS, não refazer telas.
+- **Kit de telas re-tematizável:** as réplicas do produto num só arquivo (`cliente-a-ui.css/js`) com variáveis (`--lu-brand`, `--lu-paper`, `--lu-ink`, `--lu-line`…). Cada peça tem `estilo-NN.css` que sobrescreve variáveis, sombras, bordas e a fonte de interface. Variar estilo = trocar CSS, não refazer telas.
 - **Funções puras de estado** (`luPipe`, `luChat`, `luAgenda`…): a mesma tela em qualquer estilo.
 - **Fecho como componente** (`FECHO()`) que veste a paleta e as fontes da peça.
 - **Bíblia antes, agentes depois:** com o `ESTILOS.md` pronto, cada agente produz um grupo de peças em paralelo sem conversar com os outros — a unidade está no documento.
 
-## 5. Matriz da série de exemplo (exemplo aprovado: "gostei demais")
+## 5. Matriz da série cliente A (exemplo aprovado: "gostei demais")
 
 | # | Luz | Fundo | Título | Material | Produto | Corrente |
 |---|---|---|---|---|---|---|

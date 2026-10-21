@@ -12,7 +12,7 @@ arq = {c['k']: next(pathlib.Path('.').glob(f"{c['k']}-*.mp4")) for c in clips}
 # ---------- legenda ----------
 W = json.load(open('fonte/palavras.json'))
 FORA = set()   # índices de palavras que o Whisper inventou (duração zero, tempos repetidos): ficam fora da legenda
-CORR = {'Chat': 'ChatGPT', 'GPT': ''}   # TROQUE: como o Whisper escreveu → como deve sair na legenda ('' apaga)
+CORR = {'Go': 'GoHighLevel', 'High': '', 'Level': ''}   # TROQUE: como o Whisper escreveu → como deve sair na legenda ('' apaga)
 pal = []
 for i, w in enumerate(W):
     if i in FORA: continue

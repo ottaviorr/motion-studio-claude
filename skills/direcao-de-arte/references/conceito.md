@@ -42,11 +42,11 @@ Não temos onde colar imagens, então o moodboard é escrito e preciso. Cada ref
 Referências
 - Cor e papel: risografia em duas tintas (repertório #9) — pegar o desalinhamento de 2–4 px, não os personagens.
 - Movimento: skillry twoclipping-496100 — "cada cena feita da anterior; nada some, funde ou corta".
-- Produto: reel de exemplo 07 — interface desmontada em camadas, cursor grande.
+- Produto: nosso reel cliente A 07 — interface desmontada em camadas, cursor grande.
 ```
 
 Fontes de referência, nesta ordem:
-1. Os nossos exemplos aprovados (`~/.claude/skills/motion-design/examples/`, quando houver; em séries, o `ESTILOS.md` delas).
+1. Os nossos exemplos aprovados (`~/.claude/skills/motion-design/examples/`, em especial o `ESTILOS.md` de uma série aprovada).
 2. `references/repertorio-estilos.md`.
 3. Prompts do skillry (`github.com/yihui-dev/awesome-opus5-5-videos`, `data/videos.json`; página `skillry.dev/ai-videos/opus-5-5/<slug>`). Bons para ler: `daniel-haida-636937` (filme de produto premium com regras), `twoclipping-402193` e `-496100` (forma única, keynote), `gdgtify-929495` (tipografia arquitetônica), `koldo2k-778767` (colagem/xerox), `techhalla-498547` (paleta estrita e sistema de 3 fontes), `stokebuilder-356793` ("escreva uma bíblia de estilo e um kit de componentes primeiro, para toda animação parecer o mesmo programa").
 4. Escolas e autores (Müller-Brockmann, Bauhaus, Vignelli, Paula Scher, Memphis, risografia) — pegue a **lógica** (grade, forma primária, linha de metrô), não a superfície.

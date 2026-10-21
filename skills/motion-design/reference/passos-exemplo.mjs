@@ -9,7 +9,7 @@ const preenche = (sel, v) => `(()=>{const i=document.querySelector('${sel}');con
 const clica = (txt) => `(()=>{const e=[...document.querySelectorAll('button,a,label,[role=button],div,span')].filter(x=>x.offsetParent&&x.children.length<4&&x.textContent.trim()==='${txt}').pop();if(!e)return 'não achei';e.click();return 'ok'})()`;
 export default async ({ go, ev, shot, wait, cdp }) => {
   await go("http://localhost:3000/login"); await wait(4000);          // apps com script pesado: esperar antes de interagir
-  await ev(preenche('input[type=email]', 'demo@exemplo.com')); await ev(preenche('input[type=password]', 'senha-de-teste'));
+  await ev(preenche('input[type=email]', 'demo.exemplo')); await ev(preenche('input[type=password]', 'senha-de-teste'));
   await shot("01-login-preenchido");
   console.log(await ev(clica('Entrar'))); await wait(3000);
   await shot("02-painel");

@@ -13,7 +13,8 @@ def transcrever_audio(audio, modelo):
     if os.name == 'nt':
         for d in glob.glob(os.path.join(sys.prefix, 'Lib', 'site-packages', 'nvidia', '*', 'bin')):
             os.add_dll_directory(d); os.environ['PATH'] = d + os.pathsep + os.environ['PATH']
-    for disp, tipo in (('cuda', 'float16'), ('cpu', 'int8')):
+    # no Mac não há CUDA: vai direto para a CPU (sem a mensagem de erro a cada transcrição)
+    for disp, tipo in ((('cpu', 'int8'),) if sys.platform == 'darwin' else (('cuda', 'float16'), ('cpu', 'int8'))):
         try:
             segs, _ = WhisperModel(modelo, device=disp, compute_type=tipo).transcribe(audio, language='pt', word_timestamps=True, vad_filter=True)
             segs = list(segs)   # a GPU só falha de verdade aqui (DLL carregada sob demanda)

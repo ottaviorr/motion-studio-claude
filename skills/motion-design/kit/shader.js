@@ -1,6 +1,6 @@
 // motion-design · shaders WebGL como função do tempo (seek-safe: o mesmo t desenha sempre o mesmo quadro).
 // Uso numa cena:  <canvas id="fx" class="shader"></canvas>  →  const FX = SHADER($('fx'), 'liquido', {cores:[...]});  e no frame(t): FX(t, {...})
-// queima modo 0 = cobre com tinta (k 0→1 revela) · modo 1 = só máscara (alfa = parte revelada, para mask-image) · modo 2 = só a borda que brilha
+// queima modo 0 = cobre com tinta (k 0→1 revela) · modo 1 = só máscara (alfa = parte revelada, para mask‑image) · modo 2 = só a borda que brilha
 // Efeitos: 'liquido' (fundo de tinta que flui) · 'queima' (entrada/saída: dissolve com borda que brilha) ·
 //          'vazamento' (light leak que atravessa) · 'halftone' (campo de pontos que respira).
 // Cores em hex. preserveDrawingBuffer: true — senão a captura quadro a quadro pega o canvas vazio.

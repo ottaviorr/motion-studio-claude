@@ -9,9 +9,9 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 if (process.platform !== "win32") process.exit(0);
-// raiz do estúdio: sobe as pastas até achar skills/ e projetos/ (o script roda do kit e das cópias nos projetos)
+// raiz do estúdio: sobe as pastas até achar skills/ (ou o atalho skill/) e projetos/ (o script roda do kit e das cópias nos projetos)
 let estudio = path.resolve(process.argv[2] || path.dirname(fileURLToPath(import.meta.url)));
-while (!(fs.existsSync(path.join(estudio, "skills")) && fs.existsSync(path.join(estudio, "projetos"))) && path.dirname(estudio) !== estudio) estudio = path.dirname(estudio);
+while (!((fs.existsSync(path.join(estudio, "skills")) || fs.existsSync(path.join(estudio, "skill"))) && fs.existsSync(path.join(estudio, "projetos"))) && path.dirname(estudio) !== estudio) estudio = path.dirname(estudio);
 const CHAVE = "HKCU\\Software\\Microsoft\\DirectX\\UserGpuPreferences";
 const dirs = (p) => { try { return fs.readdirSync(p, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => path.join(p, d.name)); } catch { return []; } };
 const existe = (p) => fs.existsSync(p) && p;

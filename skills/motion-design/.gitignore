@@ -9,3 +9,6 @@ examples/*/capas/
 examples/*/telas/
 examples/*/prints/
 *.mp3
+__pycache__/
+*.pyc
+

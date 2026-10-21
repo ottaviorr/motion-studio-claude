@@ -35,7 +35,7 @@ Em {PROJ}/cenas/: rNNa-<nome-curto>.mp4, rNNb-fecho.mp4
 Em {PROJ}/reels/: NN.json (formato do cabeçalho de ~/.claude/skills/motion-design/kit/gerar_reel.py; "bitrate":"{BITRATE}")
 
 4. NÃO TOQUE
-kit e marca (comum.*, marca.*, produto-ui.*, fontes/), ESTILOS.md, VOZES.md, BRIEFING.md, vozes-palavras.js, arquivos de outras peças, remotion/, git.
+kit e marca (comum.*, marca.*, cliente-a-ui.*, fontes/), ESTILOS.md, VOZES.md, BRIEFING.md, vozes-palavras.js, arquivos de outras peças, remotion/, git.
 Precisa mudar algo comum? Não mude: descreva no relatório ("PEDIDO AO DIRETOR: …").
 Não rode gerar_reel.py nem o Remotion (a montagem é em fila, feita depois).
 
@@ -51,7 +51,7 @@ Grave assim, sempre:
 Rode com `bash -c '...'` (o zsh quebra laços). Se a trava ficar presa > 20 min sem processo do hyperframes/chrome rodando (`pgrep -fl hyperframes`), avise no relatório em vez de apagar.
 
 7. PADRÃO TÉCNICO (do piloto)
-{W}×{H}, {FPS} fps, crf 12 nas cenas; fontes LOCAIS (base/fontes/ + @font-face, elemento escondido com cada peso antes do quadro 0); zona segura {ZONA}; gancho visível no quadro 0; DUR da principal = voz + 0,3 s; toda troca numa palavra com W('palavra', k) — palavra curta/repetida: use a ocorrência certa (k) ou a palavra seguinte, mais rara.
+{W}×{H}, {FPS} fps (padrão do dono: 1080p, 30 qps; 4K/60 só se ele pediu), crf 12 nas cenas, final em CBR {BITRATE} (padrão 20M); fontes LOCAIS (base/fontes/ + @font-face, elemento escondido com cada peso antes do quadro 0); zona segura {ZONA}; gancho visível no quadro 0; DUR da principal = voz + 0,3 s; toda troca numa palavra com W('palavra', k) — palavra curta/repetida: use a ocorrência certa (k) ou a palavra seguinte, mais rara.
 
 8. CONFERÊNCIA ANTES DE DEVOLVER
 - Antes de gravar: FOTOS_DIR={SCRATCH}/{PREFIXO}/fotos bash fotos.sh <cena>.html <≥12 tempos, incluindo CADA palavra-chave>; folha com grade (em pé: folha em pé com a zona segura). OLHE a folha: ilegível, sobreposto, fora da zona, fonte genérica, texto que contradiz a voz, marca proibida → corrija e fotografe de novo.

@@ -6,8 +6,8 @@
 direcao-de-arte/
   SKILL.md                         processo: briefing → conceito → cartão → quadros-chave; série; crítica; ajustar × refazer
   references/conceito.md           briefing visual, 5 geradores de conceito, teste do conceito, moodboard em texto, style frames
-  references/repertorio-estilos.md 27 direções de arte prontas (paleta hex, fontes Google conferidas, textura, movimento, quando usar/não usar)
-  references/serie.md              unidade × variedade, eixos de variação, regras de vizinhança, matriz da série de exemplo com leitura crítica
+  references/repertorio-estilos.md 32 direções de arte prontas (paleta hex, fontes Google conferidas, textura, movimento, quando usar/não usar)
+  references/serie.md              unidade × variedade, eixos de variação, regras de vizinhança, matriz da série cliente A com leitura crítica
   references/critica.md            método (Connor & Irizarry), checklist de 26 itens com números, formato de ordem de ajuste, exemplos reais
   references/anti-ia.md            sinais de "feito por IA" por categoria (cor, tipo, layout, movimento, texto) e o antídoto de cada um
   assets/cartao-direcao.md         modelo do cartão de direção (com bloco ```cartao``` que o script lê)
@@ -16,13 +16,13 @@ direcao-de-arte/
   scripts/apertar-olho.sh          folha em miniatura + borrada + cinza (teste do olho apertado), só ffmpeg
 ```
 
-Testes feitos: `conferir-serie.py` rodou na série aprovada de exemplo (lê a tabela-resumo mesmo sem blocos `cartao`): 7/14 claros (50 %, abaixo da meta de 60 % que o dono pediu depois), nenhum vizinho repetido, avisa Syne/Inter/Outfit nos apoios e destaques de baixo contraste usados como superfície. Num arquivo de teste com erros de propósito, pegou escuros seguidos, mesma fonte de título, mesmo estilo e contraste ilegível (sai com código 1). `apertar-olho.sh` gerou a folha tripla (2880×540). Todas as 60 fontes citadas responderam 200 no Google Fonts.
+Testes feitos: `conferir-serie.py` rodou na série aprovada do cliente A (lê a tabela-resumo mesmo sem blocos `cartao`): 7/14 claros (50 %, abaixo da meta de 60 % que o dono pediu depois), nenhum vizinho repetido, avisa Syne/Inter/Outfit nos apoios e destaques de baixo contraste usados como superfície. Num arquivo de teste com erros de propósito, pegou escuros seguidos, mesma fonte de título, mesmo estilo e contraste ilegível (sai com código 1). `apertar-olho.sh` gerou a folha tripla (2880×540). Todas as 60 fontes citadas responderam 200 no Google Fonts.
 
 Não editei nada fora desta pasta e não fiz commit.
 
 ## O que pesquisei
 
-1. **O que o estúdio já sabe** (para não repetir): SKILL.md, `nivel.md`, `inspiracao.md`, `armadilhas.md` da motion-design; `ESTILOS.md` e `LEIA-ME.md` da série de exemplo; histórico e `evolucao.md` das marcas; memória do dono (variar, mais claro, sem ícone redondinho, legenda só se pedir, assiste sem som).
+1. **O que o estúdio já sabe** (para não repetir): SKILL.md, `nivel.md`, `inspiracao.md`, `armadilhas.md` da motion-design; `ESTILOS.md` e `LEIA-ME.md` da série cliente A; histórico e `evolucao.md` das marcas; memória do dono (variar, mais claro, sem ícone redondinho, legenda só se pedir, assiste sem som).
 2. **Doutrina do HyperFrames 0.8.140:** `motion-doctrine` (lei do vetor, corrente, carregadores, nada de balançar parado, pausa antes do clímax), `hyperframes-creative` (house-style e "lazy defaults", video-composition, visual-styles com 8 estilos de escola, typography com fontes banidas, design-adherence) e `product-launch-video` (visual-design: plano de tomadas no tempo da voz, nunca adiantar tudo, "Video direction" escrito uma vez com lista negativa).
 3. **Os 513 prompts do skillry** (`data/videos.json`): li os mais longos de motion/explainer e os trechos de "art direction", "palette", "banned". Padrões: paleta estrita com "nenhuma outra cor", sistema de 3 fontes com papéis, regra formal única ("uma forma que nunca corta", "palavras têm papéis de arquitetura"), lista de banidos, material/meio explícito (xerox, papel, pixel), "escreva primeiro uma bíblia de estilo e um kit de componentes" para séries, "a confiança visual vem da contenção".
 4. **Como diretores de arte trabalham:** fluxo brief → moodboard → style frame → storyboard → animatic (Buck, Boords, Milanote); Figma Config (conceito antes do moodboard; 15 fps para parecer feito à mão; paleta grande gerida por variáveis); Pentagram/Channel 5 (sistema modular consistente com conteúdo variado); basement.studio/Vercel (tipografia como ativo central, precisão).

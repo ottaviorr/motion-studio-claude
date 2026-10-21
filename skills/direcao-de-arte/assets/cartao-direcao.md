@@ -15,6 +15,12 @@ numero: Azeret Mono
 textura: nenhuma
 produto: <como aparece, 3–6 palavras>
 corrente: esquerda
+linguagem: L01            # cardápio (references/cardapio-linguagens.md)
+familia: M                # V · V+ · M · D · 3D · F
+video: 45                 # % de vídeo real (área × tempo)
+fechamento: F06           # references/fechamentos.md
+canal: endereço           # link da bio / direct / telefone / QR / WhatsApp / ...
+verbo: passar
 ```
 
 ## Briefing (respostas curtas)
@@ -23,6 +29,15 @@ corrente: esquerda
 - **Sentimento (3 palavras):** <ex.: alívio, controle, calma>
 - **A virada:** <antes → depois>
 - **Clichê do tema que vamos evitar:** <ex.: dashboard roxo com cards>
+
+## Travas de repertório (obrigatórias)
+- **Linguagem:** <L01 · Palavra-janela> (+ apoio: <L18 · Corte seco tipográfico> ou "nenhuma")
+- **% vídeo × design:** <45 / 55>. Como o vídeo entra: <dentro da letra / janelas / papel / tela cheia com desenho em volta>
+- **Fechamento:** <F06 · carimbo sobre o produto>. O produto fica em quadro até o último quadro.
+- **CTA:** verbo <passar aqui> · canal <endereço> · texto exato <"…"> · posição <topo / centro / embaixo / dentro do objeto>
+- **Assinatura sonora:** 3 efeitos-chave com o tempo de cada (<chapa chiando 0,0 s> · <baque da letra 4,2 s> · <carimbo 11,1 s>) + curva da trilha (<0 entra cheia · 6 respiro · 9,5 silêncio 6 quadros · 9,7 drop · 12 só pad>)
+- **Objeto real × sistema gráfico:** filmado: <carne, fogo, chapa> · desenhado: <letra vazada, cardápio pontilhado, carimbo>
+- **Vizinhos na série:** anterior <L…/F…> · seguinte <L…/F…> (nenhum igual)
 
 ## Conceito em 1 frase
 > <ex.: "O pipeline é uma grade suíça: o card vermelho é o único que se move.">

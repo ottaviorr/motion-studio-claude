@@ -82,7 +82,7 @@ M.presses = (clicks=[],drags=[])=>{
 M.crossTimes = (f,t0,t1,ths)=>ths.map(th=>{for(let t=t0;t<=t1;t+=0.001) if(f(t)>=th) return t; return Infinity;});
 
 
-/* ===== acréscimos projeto de origem (2026-10-03) ===== */
+/* ===== acréscimos projeto de origem (03/10/2026) ===== */
 // ícones extras (Lucide, licença ISC)
 Object.assign(M.IC,{
  lock:['M7 11V7a5 5 0 0 1 10 0v4','M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2Z'],
@@ -103,7 +103,7 @@ M.w = (txt,n=1,field='t')=>{
   const W=window.WORDS||[], q=String(txt).split(/\s+/).map(norm).filter(Boolean), from=(window.CLIP_IN||0)-0.05; let hit=0;
   for(let i=0;i<W.length;i++){ if(W[i].t<from) continue;
     if(q.every((x,j)=>W[i+j]&&norm(W[i+j].w)===x)){ if(++hit===n){ const w=field==='e'?W[i+q.length-1]:W[i]; return w[field]-(window.CLIP_IN||0); } }
-    else if(q.length>1&&norm(W[i].w)===q.join('')){ if(++hit===n) return W[i][field]-(window.CLIP_IN||0); }   // "projeto de origem" guardado como uma palavra só
+    else if(q.length>1&&norm(W[i].w)===q.join('')){ if(++hit===n) return W[i][field]-(window.CLIP_IN||0); }   // nome de duas palavras que o Whisper juntou numa só (ex.: sigla + palavra)
   }
   console.warn('palavra não encontrada:',txt); return 0;
 };

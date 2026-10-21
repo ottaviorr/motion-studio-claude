@@ -8,7 +8,8 @@ uso: python compor_fundo.py conteudo.mov fundo.mp4 saida.mov [--fade 0.4] [--fur
   --furo        retângulo arredondado que fica TRANSPARENTE no resultado (janela da câmera do apresentador)
   --fade        entrada e saída da peça inteira (alfa), em segundos
   --inicio      de que segundo do fundo começar (varia o fundo entre cenas)
-  saída .mov = ProRes 4444 com alfa; saída .mp4 = H.264 opaco (NVENC se existir)."""
+  saída .mov = ProRes 4444 com alfa; saída .mp4 = H.264 opaco a 40 Mb/s (VideoToolbox no Mac, NVENC no Windows, x264 se faltar).
+  Padrão do dono: 1080p30 (--fps 30); o tamanho final é o do conteúdo."""
 import sys, os, subprocess, tempfile
 import numpy as np, cv2
 
@@ -38,12 +39,15 @@ fc = (f"[1:v]scale={W}:{H}:flags=lanczos,fps={FPS},trim=duration={D:.3f},setpts=
       f"[2:v]format=gray,loop=-1:1,fps={FPS},trim=duration={D:.3f},setpts=PTS-STARTPTS,"
       f"fade=t=in:st=0:d={FADE},fade=t=out:st={fo:.3f}:d={FADE}[m];"
       f"[c][m]alphamerge[o]")
+# opaco: codificador de vídeo da máquina com taxa alta (Mac: VideoToolbox; NVIDIA: NVENC); sem nenhum, x264 CRF 16. Sempre BT.709.
+COR = ['-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv']
+HW = ['-c:v', 'h264_videotoolbox', '-b:v', '40M', '-maxrate', '60M', '-bufsize', '80M'] if sys.platform == 'darwin' else ['-c:v', 'h264_nvenc', '-preset', 'p5', '-cq', '18']
 enc = (['-c:v', 'prores_ks', '-profile:v', '4444', '-pix_fmt', 'yuva444p10le', '-vendor', 'apl0'] if alfa else
-       ['-c:v', 'h264_nvenc', '-preset', 'p5', '-cq', '18', '-pix_fmt', 'yuv420p'])
+       HW + ['-pix_fmt', 'yuv420p', *COR, '-movflags', '+faststart'])
 cmd = ['ffmpeg', '-v', 'error', '-y', '-i', CONT, '-stream_loop', '-1', '-ss', f'{INI:.3f}', '-i', FUNDO, '-i', mp,
        '-filter_complex', fc, '-map', '[o]', '-an', *enc, SAIDA]
 r = subprocess.run(cmd)
-if r.returncode and not alfa:   # sem NVENC: x264
-    cmd[cmd.index('h264_nvenc'):cmd.index('h264_nvenc') + 5] = ['libx264', '-preset', 'medium', '-crf', '18']
+if r.returncode and not alfa:   # sem codificador de vídeo da máquina: x264
+    i = cmd.index('-c:v'); cmd[i:i + len(HW)] = ['-c:v', 'libx264', '-preset', 'medium', '-crf', '16']
     r = subprocess.run(cmd)
 sys.exit(r.returncode or print('pronto:', SAIDA, f'({D:.1f}s)'))

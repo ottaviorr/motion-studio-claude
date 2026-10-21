@@ -19,6 +19,6 @@ mkdir -p .ferramentas
 (cd .ferramentas && npm install --silent)
 [ -x .ferramentas/.venv/bin/python ] || python3 -m venv .ferramentas/.venv
 .ferramentas/.venv/bin/pip install -q faster-whisper numpy opencv-python-headless
-# GPU NVIDIA para a transcrição (faster-whisper/CTranslate2): sem elas, o transcrever.py cai para CPU sozinho
+# GPU NVIDIA para a transcrição (faster-whisper/CTranslate2): sem elas, o transcrever.py/ouvir.py cai para CPU sozinho
 nvidia-smi >/dev/null 2>&1 && .ferramentas/.venv/bin/pip install -q nvidia-cublas-cu12 "nvidia-cudnn-cu12==9.*" || true
 echo "Pronto. Abra esta pasta no Claude Code e peça um vídeo. Marca nova: crie marcas/<marca>/ (modelo em marcas/exemplo/)."

@@ -1,6 +1,6 @@
 # Tabela de números do estúdio (com fontes)
 
-Pesquisa de 2026-10-08. Os números marcados **(estúdio)** são decisão nossa, tirada da conta ao lado; o resto vem da fonte citada. A ferramenta `scripts/conferir_hierarquia.mjs` usa exatamente estes valores (objeto `PERFIS` e `ZONAS` no topo do arquivo).
+Pesquisa de 08/10/2026. Os números marcados **(estúdio)** são decisão nossa, tirada da conta ao lado; o resto vem da fonte citada. A ferramenta `scripts/conferir_hierarquia.mjs` usa exatamente estes valores (objeto `PERFIS` e `ZONAS` no topo do arquivo).
 
 ## 0. A conversão que manda em tudo
 

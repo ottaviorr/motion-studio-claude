@@ -11,20 +11,20 @@ export const meta = {
 }
 
 // ---------------------------------------------------------------------------
-// MODELO do orquestrador-video. Baseado no script real dos 15 reels de exemplo
-// (serie-cenas), com o que faltou nele: trava GLOBAL de gravação (lá cada
+// MODELO do orquestrador-video. Baseado no script real dos 15 reels do cliente A
+// (cliente-a-reels-cenas), com o que faltou nele: trava GLOBAL de gravação (lá cada
 // agente gravava "um por vez", mas 5 agentes = 5 gravações juntas), scratchpad
 // por prefixo, nomes exatos, montagem e revisão independente dentro do fluxo.
 //
 // Chame com args (objeto JSON de verdade, não string):
 // {
-//   "projeto": "${ESTUDIO}/projetos/AAAA-MM-marca-serie",
-//   "nome": "Marca Exemplo · 15 reels",
+//   "projeto": "~/motion-studio/projetos/<projeto>",
+//   "nome": "cliente A CRM · 15 reels",
 //   "scratch": "<scratchpad da sessão>",
 //   "piloto": "r01a-ferramentas",                       // em base/, padrão de código e qualidade
-//   "marcaJs": "${ESTUDIO}/marcas/<marca>/marca.js",
-//   "regras": "nunca citar concorrentes; só dados inventados; nenhum número de resultado inventado",
-//   "formato": { "w": 1080, "h": 1920, "fps": 60, "bitrate": "20M", "lufs": -14,
+//   "marcaJs": "~/motion-studio/marcas/<marca>/marca.js",
+//   "regras": "nunca citar GoHighLevel; só dados inventados; nenhum número de resultado inventado",
+//   "formato": { "w": 1080, "h": 1920, "fps": 30, "bitrate": "20M", "lufs": -14,   // padrão do dono: 1080p30 CBR alto
 //                "zona": "y 230-1300 e x < 900 (coluna de botões à direita)" },
 //   "pastaFinais": "reels",                             // onde gerar_reel.py escreve reel-NN.mp4
 //   "grupos": [["02","03","04"],["05","06","07"],["08","09","10"],["11","12","13"],["14","15"]],
@@ -39,11 +39,13 @@ export const meta = {
 const A = args || {}
 if (!A.projeto || !A.grupos || !A.pecas || !A.scratch) throw new Error('args precisa de projeto, scratch, grupos e pecas')
 const P = A.projeto
-const F = A.formato || { w: 1080, h: 1920, fps: 60, bitrate: '20M', lufs: -14, zona: 'y 230-1300 e x < 900' }
-// AJUSTE: sua pasta de usuário e a pasta do estúdio (o Workflow roda sem variáveis de ambiente)
-const HOME = '/Users/SEU_USUARIO'
+// padrão do dono (15/10/2026): 1080p, 30 qps, bitrate alto em CBR; 4K ou 60 qps só se ele pedir para a peça
+const F = A.formato || { w: 1080, h: 1920, fps: 30, bitrate: '20M', lufs: -14, zona: 'y 230-1300 e x < 900' }
+// caminhos num lugar só (o Workflow roda sem variáveis de ambiente; ideia da cópia de um colaborador)
+const HOME = process.env.HOME || '~'
 const ESTUDIO = HOME + '/motion-studio'
-const K = HOME + '/.claude/skills/motion-design'
+const SKILLS = HOME + '/.claude/skills'
+const K = SKILLS + '/motion-design'
 const HFD = HOME + '/.claude/plugins/cache/hyperframes/hyperframes/0.8.140/.claude/skills'
 const PY = ESTUDIO + '/.ferramentas/.venv/bin/python'
 const FINAIS = A.pastaFinais || 'reels'
@@ -149,14 +151,14 @@ Gravar uma cena: bash -c '${TRAVA}; cd ${P}/base && node ${K}/kit/hf.mjs ../cena
 const promptMontagem = (n) => `Monte e meça a peça ${n} de ${A.nome}. Projeto: ${P}. Você só monta e mede; não edite cenas nem JSON.
 ${regraFila}
 1. Confira que ${P}/reels/${n}.json existe e que cada arquivo de "cenas" existe. Faltou algo → ok=false, erro com o que falta.
-2. Num único bash com a trava: bash -c '${TRAVA}; cd ${ESTUDIO} && ${PY} ${K}/kit/gerar_reel.py ${P} --render ${n} && ${PY} ${HOME}/.claude/skills/revisao-video/scripts/revisar.py ${P}/${FINAIS}/reel-${n}.mp4 --fotos 12'
+2. Num único bash com a trava: bash -c '${TRAVA}; cd ${ESTUDIO} && ${PY} ${K}/kit/gerar_reel.py ${P} --render ${n} && ${PY} ${SKILLS}/revisao-video/scripts/revisar.py ${P}/${FINAIS}/reel-${n}.mp4 --fotos 12'
    (se o nome do final for outro, use o que o gerar_reel.py imprimir).
 3. Leia o revisao.txt e devolva pelo schema: final, revisao, duração, LUFS, pico, bitrate medido. ok=false se LUFS fora de ${F.lufs}±1, pico > -1 dBFS ou bitrate < ${parseInt(F.bitrate, 10) * 0.9} Mb/s.`
 
 const promptRevisao = (n, m) => `Você é o REVISOR INDEPENDENTE da peça ${n} de ${A.nome}. Você não fez a peça e NÃO edita nada do projeto: leia, meça e dê o veredito com evidência.
 Final: ${m && m.final ? m.final : `${P}/${FINAIS}/reel-${n}.mp4`}. Relatório técnico: ${m && m.revisao ? m.revisao : '(não veio: rode revisar.py com saída no seu rascunho)'}.
 Rascunho só em ${A.scratch}/qa-${n}/. Comando pesado (revisar.py, ffmpeg em vídeo inteiro) só com a trava: bash -c '${TRAVA}; <comando>'.
-Leia: ${HOME}/.claude/skills/revisao-video/SKILL.md, a skill hierarquia-visual (se instalada), ${P}/BRIEFING.md, a seção ${n} de ESTILOS.md e de VOZES.md, ${A.marcaJs}.
+Leia: ${SKILLS}/revisao-video/SKILL.md, a skill hierarquia-visual (se instalada), ${P}/BRIEFING.md, a seção ${n} de ESTILOS.md e de VOZES.md, ${A.marcaJs}.
 Meça cada item, com número/tempo/foto:
 1 Fala: transcrição × VOZES.md (voz inteira; diferença perto de emenda → recorte 6 s e transcreva antes de acusar).
 2 Mixagem: LUFS ${F.lufs}±1, pico ≤ -1 dBFS, voz − música ~18–21 dB (meça um trecho com voz e o fecho só com música, ffmpeg ebur128 com -ss/-t).

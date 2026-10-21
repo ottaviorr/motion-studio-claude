@@ -4,22 +4,31 @@
     {
       "id": 1,
       "eval_name": "decupagem-aula-ia",
-      "prompt": "gravei uma aula do curso explicando a ação nova da plataforma que liga e desliga a IA. a transcrição em frases tá em entrada/frases.txt (tempos em segundos do bruto). antes de editar, me diz como você enxerga essa aula: o que fica, o que sai e por quê. quero um vídeo que faça sentido do começo ao fim, sem eu me repetindo",
-      "expected_output": "Decupagem em blocos com função; acha o recomeço (frase 8), a configuração mostrada duas vezes (12 x 13-15), o caminho abandonado no caso do agendamento (27 'update → ativa' e 29 'ou melhor, eu até tiro isso aqui'), a tomada corrigida (28), as gaguejadas (13 'posso vim cá', 28 'auto'), o fim sem fechamento; propõe capítulos e fechamento; não sugere juntar palavras de lugares diferentes.",
-      "files": ["entrada/frases.txt"]
+      "prompt": "gravei uma aula do curso explicando a ação nova do GoHighLevel que liga e desliga a IA. a transcrição em frases tá em entrada/frases.txt (tempos em segundos do bruto). antes de editar, me diz como você enxerga essa aula: o que fica, o que sai e por quê. quero um vídeo que faça sentido do começo ao fim, sem eu me repetindo",
+      "expected_output": "Decupagem em blocos com função; acha o recomeço (frase 8), a configuração mostrada duas vezes [12 x 13 a 15], o caminho abandonado no caso do agendamento (27 'update → ativa' e 29 'ou melhor, eu até tiro isso aqui'), a tomada corrigida [28], as gaguejadas (13 'posso vim cá', 28 'auto'), o fim sem fechamento; propõe capítulos e fechamento; não sugere juntar palavras de lugares diferentes.",
+      "files": [
+        "entrada/frases.txt"
+      ]
     },
     {
       "id": 2,
       "eval_name": "youtube-sem-marca",
       "prompt": "tenho um vlog de 12 min pro youtube (só eu falando pra câmera, sem tela) em ~/Downloads/vlog.mp4. corta os silêncios e as partes que eu me enrolo, não precisa de legenda nem de marca, só quero que fique com cara de vídeo editado",
-      "expected_output": "Usa o fluxo sem câmera separada (talking head), sem legenda corrida, sem motions de marca; decupagem narrativa; cortes com bordas no silêncio; ouve as emendas; entrega em qualidade alta; revisão no fim.",
+      "expected_output": "Usa o fluxo sem câmera separada (talking head), sem legenda corrida, sem motions de marca; decupagem narrativa; cortes com bordas no silêncio; ouve as emendas; normaliza o bruto (normalizar.py), entrega no padrão 1080p30 18 Mb/s; revisão no fim.",
       "files": []
     },
     {
       "id": 3,
       "eval_name": "pixelado-4x",
       "prompt": "o vídeo que você editou ficou meio pixelado e aquelas partes aceleradas em 4x não fizeram sentido, dá pra melhorar?",
-      "expected_output": "Mede antes de mexer (compressão × aumento), entrega 4K com um único redimensionamento, motions em 4K; troca aceleração por corte com fusão.",
+      "expected_output": "Mede antes de mexer (compressão × aumento com qualidade.py); um único redimensionamento Lanczos + nitidez leve, zoom máx. 1,6×, pede captura maior; mantém a entrega no padrão do dono (1080p30, 18 Mb/s — não volta para 4K sem ele pedir); troca aceleração por corte com fusão.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "eval_name": "voz-fora-da-boca",
+      "prompt": "no último vídeo que você editou com motion por cima, minha voz tá meio fora da boca na câmera em algumas partes. dá uma olhada e conserta",
+      "expected_output": "Mede antes de mexer: sincronia.py (ou revisar.py) com --original e --edl, atraso por emenda em ms e o pior caso; checa se o bruto é de taxa variável (normalizar.py diz); refaz com bruto normalizado, plano na grade de 30 fps (q_in/q0/nq) e render/gerar_remotion novos; mostra o antes × depois em ms (meta ≤ 33 ms, reprova > 40 ms). Não 'empurra' o áudio no olho com um offset fixo.",
       "files": []
     }
   ]

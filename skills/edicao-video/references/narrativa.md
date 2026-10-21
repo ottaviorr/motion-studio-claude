@@ -23,7 +23,7 @@ Quem grava explicando ao vivo pensa em voz alta: começa uma frase, desiste, mos
 - **A frase depois da emenda tem que se sustentar sozinha.** Prefira cortar em fim de frase. Se cortar no meio, ouça (`scripts/ouvir_emendas.py --cortes`): "…duas horas depois dele ter acontecido, e coloco assim: remover tag" funciona; "…quando alguém mover o lead para essa etapa ‖ é bem simples de criar" não (frase sem fim).
 - **Não reescreva o apresentador.** Cortar é escolher entre o que ele disse; nada de juntar palavras soltas de lugares diferentes para formar frase nova (a boca na câmera denuncia).
 
-## Exemplo real (aula de exemplo, 4min25 → 2min48)
+## Exemplo real (aula IA ON/OFF, 4min25 → 2min48)
 | Bloco | Frases | Diagnóstico | Decisão |
 |---|---|---|---|
 | Abertura + o que a ação faz | 1–6 | ok | fica (motions de abertura e da ação) |
@@ -32,3 +32,25 @@ Quem grava explicando ao vivo pensa em voz alta: começa uma frase, desiste, mos
 | Uma tag, duas automações | 19–22 | coração da aula | fica (motion "uma tag só") |
 | Caso real: agendamento | 23–33 | monta "update → ativa", explica e troca por "remover tag" | corta o caminho abandonado e o "ou melhor, eu até tiro isso aqui" |
 | Fim | — | termina em "…minha empresa, etc." | card de fechamento com o resumo |
+
+## Gancho (0–30 s) — o YouTube mede ("Intro": % que continua depois de 30 s)
+- **0–10 s: provar o título.** De preferência MOSTRAR o resultado funcionando (cold open: a automação
+  disparando, o lead recebendo, o painel com o número) — um trecho real de 3–8 s tirado do meio da
+  gravação, antes da fala de abertura. Sem "oi, pessoal" antes disso.
+- **10–20 s: por que importa** (a dor: "você já teve dificuldade de…").
+- **até 30 s: o roteiro em uma linha** ("vou te mostrar a régua, a automação e um teste ao vivo")
+  e o nome do assunto dito.
+- Primeira mudança visual forte (motion ou troca de plano) entre 25–35 s.
+- Se o assunto aparece pela 1ª vez depois de 30 s, puxe a frase para antes ou abra com um motion que o diga.
+
+## Re-gancho a cada ~2–3 min
+- Cada capítulo abre com uma frase (falada ou no motion) que lembra o que está em jogo
+  ("agora a parte que impede o lead de ficar no vácuo"). Aluno de tutorial assiste 2–3 min e pula (Guo 2014).
+
+## Ideia errada antes da certa
+- Quando der, mostre o erro comum antes da solução (Veritasium/Muller: aprendizado ~2×). "A pegadinha"
+  da aula SLA é o modelo.
+
+## Fechamento
+- Resumo + próximo passo em ≤ 20 s. O card de fechamento deixa **livre** a área da tela final do
+  YouTube (até 4 elementos, nos últimos 5–20 s; vídeo ≥ 25 s).

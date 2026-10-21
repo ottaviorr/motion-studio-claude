@@ -24,3 +24,5 @@ revisao-emendas/
 # atalhos (junctions no Windows) para skills/
 /skill
 /skill-*
+# cache do Python
+__pycache__/

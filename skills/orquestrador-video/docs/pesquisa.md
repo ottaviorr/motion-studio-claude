@@ -4,9 +4,9 @@ Data: 08/10/2026. Papel: diretor de produção (orquestrador) do Motion Studio.
 
 ## O que foi lido no estúdio
 - `CLAUDE.md` do estúdio, memórias do dono (`edicao-de-video.md`, `reels-variedade.md`).
-- Skills: motion-design (SKILL.md, `nivel.md`, `armadilhas.md`, `historico.md`, `motores.md`, `kit/gerar_reel.py`, a série de exemplo), edicao-video, revisao-video (`revisar.py`).
-- Projeto `projetos/AAAA-MM-marca-serie/`: ROTEIROS.md, ESTILOS.md, VOZES.md, ENTREGA.md, `reels/*.json`, `base/` (nomes das cenas por agente), pastas `reels/` e `reels-prontos/`.
-- Script de Workflow real: `<workflow do projeto>` (5 grupos, `parallel`, uma fase, sem montagem nem QA dentro do fluxo).
+- Skills: motion-design (SKILL.md, `nivel.md`, `armadilhas.md`, `historico.md`, `motores.md`, `kit/gerar_reel.py`), edicao-video, revisao-video (`revisar.py`).
+- Projeto `projetos/<projeto>/`: ROTEIROS.md, ESTILOS.md, VOZES.md, ENTREGA.md, `reels/*.json`, `base/` (nomes das cenas por agente), pastas `reels/` e `reels-prontos/`.
+- Script de Workflow real: `<pasta-de-workflows>` (5 grupos, `parallel`, uma fase, sem montagem nem QA dentro do fluxo).
 - Plugin HyperFrames 0.8.140: `product-launch-video/SKILL.md`, `hyperframes/references/{brief-contract,review-loop,production-loop,subagent-dispatch}.md`.
 - skill-creator (formato, descrição "insistente", corpo imperativo explicando o porquê) e workflow-authoring (API `agent/pipeline/parallel/phase/log`, `schema`, sem `Date.now`, `pipeline` como padrão, retomada por cache).
 - Rascunhos paralelos: só a pasta `hierarquia-visual/` existia (vazia de SKILL.md); `direcao-de-arte` ainda não. A skill conta com as duas pelo nome e diz o que cada uma entrega.
@@ -33,7 +33,7 @@ Data: 08/10/2026. Papel: diretor de produção (orquestrador) do Motion Studio.
 ## As 10 lições mais valiosas
 1. **Portão aprovado trava a etapa.** Roteiro → direção de arte → piloto → produção. Mudança depois do portão desfaz tudo o que veio depois (produtoras cobram por isso; nós pagamos em render). Diga ao dono o custo em uma linha e junte os ajustes numa lista só.
 2. **Styleframe antes de animar.** Uma foto parada por peça com fonte e cor reais aprova o visual sem gastar gravação (é o "sketch pass" do HyperFrames e o styleframe das produtoras).
-3. **Piloto completo antes de paralelizar.** Ele fixa o padrão técnico (mixagem medida, CBR, LUFS, fontes locais, nomes) e traz a reação do dono quando ainda é barato mudar. Na série de exemplo, "variar mais e fundo claro" veio do piloto.
+3. **Piloto completo antes de paralelizar.** Ele fixa o padrão técnico (mixagem medida, CBR, LUFS, fontes locais, nomes) e traz a reação do dono quando ainda é barato mudar. No cliente A, "variar mais e fundo claro" veio do piloto.
 4. **Congele o que é compartilhado antes do disparo.** Agentes paralelos não se veem; o que não estiver escrito eles decidem cada um de um jeito (Cognition). `ESTILOS.md`, kit, fontes, tempos das vozes e o piloto são a "memória comum".
 5. **Uma escrita por arquivo.** Arquivo compartilhado só o diretor edita; cada agente só toca o que tem o prefixo dele; o revisor só lê. Pedido de mudança comum vem no relatório.
 6. **Contrato com nomes exatos e critério de pronto no disco.** Objetivo, leituras, arquivos permitidos (nomes literais), proibidos, rascunho, fila, padrão técnico, conferência, formato de resposta e "pronto = estes arquivos existem". Confira o disco, não a mensagem.

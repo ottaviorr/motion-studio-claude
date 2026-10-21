@@ -99,7 +99,7 @@ Limite: **duas rodadas** de ajuste na mesma cena. Na terceira, refaça a composi
 
 ## 6. Exemplos reais do estúdio
 
-- **Reel 01 da série de exemplo (piloto):** reação do dono "gostei do estilo", mas "nem sempre roxo, nada de ícones redondinhos". Crítica que faltou antes: item 9 (conjunto de ícones) e a regra da série (a cor da marca não é o fundo de todas).
+- **Reel 01 cliente A (piloto):** reação do dono "gostei do estilo", mas "nem sempre roxo, nada de ícones redondinhos". Crítica que faltou antes: item 9 (conjunto de ícones) e a regra da série (a cor da marca não é o fundo de todas).
 - **Série 02–15:** escrita a bíblia inteira antes, cada reel com conceito próprio → "gostei demais dos resultados". Crítica que funcionou: conferir vizinhos e contar claro × escuro na tabela.
 - **Carimbo "IMPOSTO"** (VSL anterior) leu como "taxa": item 15 (ler como o espectador) — frase literal ganha de trocadilho.
 - **Música alta sob a voz:** não é direção de arte, mas a mesma lógica: medir em vez de achar (motion-design, `gerar_reel.py`).

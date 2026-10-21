@@ -1,6 +1,6 @@
 # Leitura em vídeo: celular, sem som, de relance (referência)
 
-Pesquisa de 2026-10-08.
+Pesquisa de 08/10/2026.
 
 ## 1. O espectador do estúdio
 
@@ -55,7 +55,7 @@ Ordem de entrada = ordem de leitura: entre o título primeiro, o apoio 0,2–0,4
 ## 6. UI de produto mostrada no vídeo
 
 - UI web real tem texto de 12–16 px. Num reel de 1080, a janela de 1600 px inteira reduzida a ~1000 px deixa o texto com 8–10 px = **ilegível** (3–4 pt).
-- Zoom mínimo para ler: **30 px ÷ tamanho do texto da UI**. UI de 20–23 px (kit de telas) → zoom **1,3–1,5×** (a regra que já estava no ESTILOS.md agora tem a conta). UI de 14 px → 2,1×.
+- Zoom mínimo para ler: **30 px ÷ tamanho do texto da UI**. UI de 20–23 px (kit cliente A) → zoom **1,3–1,5×** (a regra que já estava no ESTILOS.md agora tem a conta). UI de 14 px → 2,1×.
 - Janela inteira só por um instante (< 1 s, como "mapa"); depois a câmera vai ao ponto que a fala cita.
 - Reconstrua em camadas e escale a região, em vez de print parado (`inspiracao.md`). Em 16:9 no feed em pé, UI ≥ 54 px efetivos (zoom 2,5–4×).
 - A ferramenta avisa: "UI em 19 px < 30 px: se a fala cita este texto, aproxime 1,58× ou mais".

@@ -12,7 +12,7 @@ Cada cena é uma página HTML em que **cada quadro é uma função do tempo** (`
 | `direcao-de-arte` | Conceito visual antes de produzir (cartão de direção, 27 estilos, séries sem repetição) e crítica depois |
 | `hierarquia-visual` | Tamanho de letra, contraste, cor, zona segura e tempo de leitura em números, mais um conferidor automático de cenas |
 | `motion-design` | Cenas em HTML (anúncio, VSL, explicador, motion por cima de gravação, vídeo na batida da música), kit de animação, gravadores, montagem |
-| `edicao-video` | Edita gravações: narrativa, cortes de erro, zoom na ação, câmera limpa, capítulos, 4K |
+| `edicao-video` | Edita gravações: narrativa, cortes de erro, zoom na ação, câmera limpa, capítulos, pop-ups e texto de ênfase, entrega 1080p30 |
 | `revisao-video` | Revisa o vídeo final sem assistir: transcreve de novo, mede volume e qualidade, fotografa as emendas |
 | `editorial-film-edit` | Edição em estilo editorial de arquivo: texto cinético, grão de filme, bloom, máscaras e tela dividida com o apresentador (em inglês; os módulos de navegador vêm em `implementation/`) |
 | `paper-collage-film` | Filme de colagem de papel rasgado, de 5 a 30 s (intro, trailer, promo 16:9), em stop-motion feito em código, com motor em canvas, trilha sintetizada e exemplos (em inglês; alguns scripts usam Swift e só rodam no macOS) |
@@ -21,6 +21,8 @@ Também vêm:
 - `novo-projeto.sh`, que cria um projeto;
 - `marcas/exemplo/`, um pacote de marca neutro para copiar;
 - o `CLAUDE.md` com as regras do estúdio.
+
+**Novidades desta versão:** cardápio de 30 linguagens de vídeo curto, catálogo de fechamentos/CTAs, rubrica de nota, gramática de edição (pop-ups, anotações, tela em cena, texto de ênfase, som), conferidor de sincronia voz × câmera, kit novo (ritmo, película, objeto 3D, shader, mistura vídeo × design, recorte de sujeito, som desenhado, desfoque real).
 
 **Não vêm:** vídeos ou exemplos prontos, áudios, marcas reais, projetos, histórico de clientes. Você parte das skills e cria os seus. A pasta `skills/motion-design/reference/historico.md` começa vazia e vai sendo preenchida pelos seus vídeos.
 
@@ -50,7 +52,7 @@ claude plugin marketplace add heygen-com/hyperframes
 Abra a pasta no Claude Code (`cd ~/motion-studio && claude`) e peça, por exemplo:
 - "faz um motion de 30 s apresentando minha marca, na batida da música";
 - "faz 10 reels sobre o meu produto, cada um com uma cara";
-- "edita essa gravação da aula e deixa em 4K";
+- "edita essa gravação da aula e deixa profissional";
 - "revisa esse vídeo antes de eu postar".
 
 Marca nova: o Claude pergunta cores, fontes, logo e regras de texto e cria `marcas/<marca>/` a partir de `marcas/exemplo/`.

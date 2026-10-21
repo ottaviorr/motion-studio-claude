@@ -1,6 +1,6 @@
 # Modelo de ENTREGA.md
 
-Fica ao lado da pasta de finais. Escrito para o dono, que vai ler no VS Code **sem som**: o som precisa estar descrito em texto. Baseado no `ENTREGA.md` dos 15 reels de exemplo (aprovado).
+Fica ao lado da pasta de finais. Escrito para o dono, que vai ler no VS Code **sem som**: o som precisa estar descrito em texto. Baseado no `ENTREGA.md` dos 15 reels do cliente A (aprovado).
 
 ```markdown
 # {Marca} · {N} {tipo de peça} (entrega de {DD/MM/AAAA})

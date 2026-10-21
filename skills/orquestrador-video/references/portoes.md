@@ -56,3 +56,9 @@ Marque cada item antes de passar. Item que não se aplica: escreva "n/a" e o por
 - [ ] Lição de orquestração nesta skill
 - [ ] Ferramenta nova no `kit/`; exemplo enxuto se subiu o nível
 - [ ] Commits pequenos por assunto; motion-design: push no privado (nunca `publico`)
+
+
+## Avaliador com nota (desde 16/10/2026 — estudo de aprimoramento)
+Nos portões de styleframe (P2) e de entrega (P5/P6), além do revisor técnico: um avaliador SEM contexto da produção dá nota pela rubrica (`direcao-de-arte/references/rubrica.md`, 10 critérios, 1–5, com evidência) à peça E ao vídeo anterior do mesmo tipo.
+Passa: média ≥ 4,0, nada ≤ 2, sem ⛔ técnico, e ganha do anterior em ≥ 2 critérios sem perder em nenhum. No máximo 3 voltas; na 3ª, vai ao dono com as notas.
+Depois que o dono reage: linha em `~/motion-studio/aprendizado/reacoes.md` e `POSTMORTEM.md` (modelo em `motion-design/reference/postmortem-modelo.md`). Nota alta + dono pedindo refazer = corrigir a rubrica.

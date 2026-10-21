@@ -1,6 +1,6 @@
 # Cor e contraste em vídeo (referência)
 
-Pesquisa de 2026-10-08. Números com fonte; o que é decisão do estúdio está marcado como **(estúdio)**.
+Pesquisa de 08/10/2026. Números com fonte; o que é decisão do estúdio está marcado como **(estúdio)**.
 
 ## 1. Papéis de cor: fundo · tinta · UM destaque
 

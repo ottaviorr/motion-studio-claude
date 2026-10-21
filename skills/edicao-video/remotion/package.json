@@ -1,7 +1,7 @@
 {
   "name": "aula-ia-on-off-v3",
   "private": true,
-  "scripts": { "dev": "remotion studio", "render": "remotion render Aula out/aula-v3.mp4" },
+  "scripts": { "dev": "remotion studio", "render": "bash renderizar.sh" },
   "dependencies": {
     "remotion": "4.0.534", "@remotion/cli": "4.0.534", "@remotion/media": "4.0.534",
     "@remotion/google-fonts": "4.0.534", "react": "19.2.0", "react-dom": "19.2.0"

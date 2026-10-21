@@ -10,7 +10,11 @@ Regras:
   - silêncio longo → corta, deixando um respiro antes/depois (com a tela mexendo também: o resultado aparece logo depois
     e a fala segue; acelerar no meio de uma frase quebra o sentido — o dono reprovou). Aceleração só com "acelerar": {"ativo": true}
   - emenda em que a tela muda de verdade ganha "fusao" (o render funde 0,25 s em vez de pular)
-  - cada borda de corte é puxada para o ponto mais baixo do áudio por perto (sem cortar sílaba nem dar estalo)."""
+  - cada borda de corte é puxada para o ponto mais baixo do áudio por perto (sem cortar sílaba nem dar estalo).
+  - SINCRONIA POR CONSTRUÇÃO: no fim, toda borda vai para o quadro mais próximo da grade de "fps" (padrão 30): cada trecho tem
+    um número inteiro de quadros, o início no editado é um quadro inteiro e o áudio é cortado nos MESMOS instantes
+    (1/30 s = 1600 amostras a 48 kHz, exato). Nada de arredondar vídeo e áudio cada um para um lado.
+    O edl ganha "q_in" (quadro do bruto), "q0" (quadro do editado) e "nq" (quantos quadros) — render.py e gerar_remotion.py usam esses inteiros."""
 import sys, json, os, subprocess
 import numpy as np
 
@@ -98,6 +102,10 @@ for x, y in fica:
         cur = b2
     segs.append((cur, y, 1.0, 'fala'))
 segs = [s for s in segs if s[1] - s[0] > 0.02]
+FPS = C.get('fps', 30)
+grade = lambda x: round(x * FPS) / FPS
+segs = [(grade(a), grade(b), v, tipo) for a, b, v, tipo in segs]
+segs = [s for s in segs if s[1] - s[0] >= 1 / FPS - 1e-9]
 
 # ---------- 3. mapa bruto → editado ----------
 cam = C.get('camera')
@@ -107,14 +115,15 @@ def mini(tt):
     g = np.frombuffer(b, np.uint8).reshape(108, 192).astype(np.int16)
     if cam: g = g.copy(); x, y, w, h = cam; g[int(y / 10) - 1:int((y + h) / 10) + 2, int(x / 10) - 1:int((x + w) / 10) + 2] = 0
     return g
-edl = []; t = 0.0
+edl = []; t = 0.0; q = 0
 for i, (a, b, v, tipo) in enumerate(segs):
-    e = {'in': round(a, 3), 'out': round(b, 3), 'vel': v, 'tipo': tipo, 'ini': round(t, 3)}
+    nq = max(1, round((b - a) / v * FPS))   # quadros do trecho no editado (inteiro; acelerado arredonda a duração, não as bordas)
+    e = {'in': round(a, 6), 'out': round(b, 6), 'vel': v, 'tipo': tipo, 'ini': round(q / FPS, 6), 'q_in': round(a * FPS), 'q0': q, 'nq': nq}
     if i and a - segs[i - 1][1] > .05:   # houve corte antes deste trecho
         muda = float((np.abs(mini(segs[i - 1][1] - .03) - mini(a + .02)) > 18).mean())
         if muda > C.get('fusao_limiar', .02): e['fusao'] = round(muda, 3)
     edl.append(e)
-    t += (b - a) / v
+    q += nq; t = q / FPS
 def mapa(s, folga=0.0):
     """tempo bruto → editado; com folga, um ponto que caiu num corte vai para a borda mais próxima (até 'folga' s)"""
     for e in edl:
@@ -132,7 +141,7 @@ for w in W:
     if m1 is None: m1 = m0 + .2
     final.append({'w': w['w'], 't': round(m0, 3), 'e': round(max(m0, m1), 3), 'src': w['t']})
 
-json.dump({'dur': round(t, 3), 'bruto_dur': round(DUR, 3), 'trechos': edl}, open(os.path.join(base, 'edl.json'), 'w'), indent=1)
+json.dump({'dur': round(t, 6), 'fps': FPS, 'quadros': q, 'bruto_dur': round(DUR, 3), 'trechos': edl}, open(os.path.join(base, 'edl.json'), 'w'), indent=1)
 json.dump(final, open(os.path.join(base, 'palavras-final.json'), 'w'), ensure_ascii=False, indent=0)
 open(os.path.join(base, 'palavras-final.txt'), 'w').write(' '.join(f"{w['t']:.2f}:{w['w']}" for w in final) + '\n')
 open(os.path.join(base, 'cortes.txt'), 'w').write(

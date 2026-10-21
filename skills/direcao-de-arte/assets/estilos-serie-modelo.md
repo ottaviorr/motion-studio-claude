@@ -1,6 +1,6 @@
 # <Marca> · Bíblia de estilos da série <nome> (<N> peças)
 
-Escrito em <data>. Formato: <9:16 1080×1920, 60 fps, 45 s–1min30, com narração>.
+Escrito em <data>. Formato: <9:16 1080×1920, 30 fps, CBR 20 Mb/s, 45 s–1min30, com narração>.
 Conferir antes de produzir: `python3 <skill>/scripts/conferir-serie.py ESTILOS.md`.
 
 ## Núcleo fixo (vale para todas)
