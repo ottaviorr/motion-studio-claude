@@ -16,7 +16,7 @@ const saida = path.resolve(process.argv[2] && !process.argv[2].startsWith("--") 
 const fps = Number(arg("--fps", 30)), so = arg("--so", null), blur = Number(arg("--blur", 1));
 const escala = Number(arg("--escala", 1)), crf = String(arg("--crf", 17));
 // --prores: .mov transparente em ProRes 4444 (o ffmpeg lê o alfa e consegue sobrepor; o HEVC com alfa ele não lê)
-const prores = process.argv.includes("--prores");
+const prores = process.argv.includes("--prores") || process.platform !== "darwin";   // alfa sem ProRes usa hevc_videotoolbox, que só existe no Mac
 const alfa = saida.endsWith(".mov");
 const html = path.resolve(arg("--html", "cena.html"));
 const CHROME = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";

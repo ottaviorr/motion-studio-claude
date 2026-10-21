@@ -164,7 +164,10 @@ def por_camera(out, src):
 # ---------- selo de aceleração (só se o plano ainda acelerar algum trecho) ----------
 def selo(texto):
     from PIL import Image, ImageDraw, ImageFont
-    f = ImageFont.truetype('/System/Library/Fonts/SFNSRounded.ttf', int(30 * E))
+    # fonte do sistema: Mac (SF Rounded), Windows (Segoe UI negrito), Linux (DejaVu); sem nenhuma, a padrão do Pillow
+    for arq in ('/System/Library/Fonts/SFNSRounded.ttf', 'C:/Windows/Fonts/segoeuib.ttf', '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'):
+        if os.path.exists(arq): f = ImageFont.truetype(arq, int(30 * E)); break
+    else: f = ImageFont.load_default(int(30 * E))
     try: f.set_variation_by_name('Bold')
     except Exception: pass
     w = int(f.getlength(texto)) + int(46 * E); h = int(54 * E)

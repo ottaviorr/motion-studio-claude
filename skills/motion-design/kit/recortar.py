@@ -13,7 +13,7 @@ Sai em pasta/:
 --modelo multiclasse (padrão, 256×256, tem cabelo/rosto/corpo/roupa) ou selfie (mais leve, só pessoa, borda mais dura).
 --ponto x,y (fração 0–1 no 1º quadro): rastreia esse ponto com fluxo óptico (Lucas-Kanade do OpenCV) → "ponto" no JSON (linhaSegue).
 --suave: mistura com a máscara do quadro anterior (0 = sem, 0,5 = padrão) para a borda não tremer.
-Modelos em ~/motion-studio/.ferramentas/modelos/ (selfie_multiclass_256x256.tflite, selfie_segmenter.tflite).
+Modelos em .ferramentas/modelos/ do estúdio, baixados pelo instalar.sh (selfie_multiclass_256x256.tflite, selfie_segmenter.tflite).
 """
 import sys, os, json
 import numpy as np, cv2
@@ -27,7 +27,10 @@ op = lambda k, d=None: a[a.index(k) + 1] if k in a else d
 video = a[0]; pasta = op('--saida', os.path.splitext(video)[0] + '-recorte')
 ini = float(op('--inicio', 0)); dur = op('--dur'); FPS = float(op('--fps', 30)); LARG = int(op('--largura', 720))
 modelo = op('--modelo', 'multiclasse'); classes = op('--classes', 'pessoa'); suave = float(op('--suave', .5)); ponto = op('--ponto')
-MOD = os.path.expanduser('~/motion-studio/.ferramentas/modelos/' + ('selfie_multiclass_256x256.tflite' if modelo == 'multiclasse' else 'selfie_segmenter.tflite'))
+_nome = 'selfie_multiclass_256x256.tflite' if modelo == 'multiclasse' else 'selfie_segmenter.tflite'
+_pastas = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '.ferramentas', 'modelos'), os.path.expanduser('~/motion-studio/.ferramentas/modelos')]
+MOD = next((os.path.join(d, _nome) for d in _pastas if os.path.exists(os.path.join(d, _nome))), None)
+if not MOD: sys.exit(f'modelo {_nome} não encontrado em .ferramentas/modelos/ (o instalar.sh baixa)')
 # multiclasse: 0 fundo, 1 cabelo, 2 pele do corpo, 3 pele do rosto, 4 roupa, 5 outros (acessórios)
 CL = {'pessoa': [1, 2, 3, 4, 5], 'cabelo': [1], 'corpo': [2], 'rosto': [3], 'roupa': [4], 'outros': [5], 'pele': [2, 3]}
 quero = sorted({c for n in classes.split(',') for c in CL[n.strip()]})

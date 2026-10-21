@@ -33,7 +33,7 @@ Instalação: `bash instalar.sh` (liga as skills em `~/.claude/skills` e instala
   - uma pasta por vídeo, com `fonte/` (cenas .html, roteiro, palavras.json);
   - os .mp4 finais.
 - `entrada/` — onde o dono solta áudios (ElevenLabs), gravações, prints e logos. Mova para o projeto certo ao começar e deixe a pasta limpa.
-- `.ferramentas/` — Node (playwright-core, puppeteer-core, HyperFrames 0.8.140) e Python (faster-whisper, numpy, opencv), instalados pelo `instalar.sh`:
+- `.ferramentas/` — Node (playwright-core, puppeteer-core, HyperFrames 0.8.140, matter-js), Python (faster-whisper, numpy, opencv, librosa, mediapipe, pillow) e `modelos/` (recorte de sujeito), instalados pelo `instalar.sh`:
   - **transcrever:** `.ferramentas/.venv/bin/python skill/scripts/transcrever.py voz.mp3 fonte/palavras.json --roteiro fonte/roteiro.txt --modelo small`
   - **scripts de Node que precisam de pacote:** `NODE_PATH=$PWD/.ferramentas/node_modules node ...`
   - **gravar cenas mais rápido:** `node skill/kit/hf.mjs saida.mp4 --html cena.html` (1080p30 por padrão) ou `MOTOR=hf bash fonte/gravar-todos.sh` (ver `skill/reference/motores.md`)

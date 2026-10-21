@@ -195,8 +195,9 @@ until mkdir "$F" 2>/dev/null; do sleep 2; done; trap 'rmdir "$F" 2>/dev/null' EX
 t0=$(date +%s)
 # uma passada: vídeo quase sem perda + áudio PCM (sem AAC no meio). Render só do áudio (--codec=wav) custava 4 min a mais.
 npx remotion render Aula out/montagem.mkv --codec=h264 --crf=10 --x264-preset=veryfast --audio-codec=pcm-16 --log=error "$@"
-"{sys.executable}" "{os.path.abspath(os.path.join(os.path.dirname(__file__), 'finalizar.py'))}" out/montagem.mkv "{final}"
+"{sys.executable.replace(os.sep, '/')}" "{os.path.abspath(os.path.join(os.path.dirname(__file__), 'finalizar.py')).replace(os.sep, '/')}" out/montagem.mkv "{final}"
 echo "montagem + finalização em $(( $(date +%s) - t0 ))s"
 """
-open(os.path.join(R, 'renderizar.sh'), 'w').write(sh); os.chmod(os.path.join(R, 'renderizar.sh'), 0o755)
+open(os.path.join(R, 'renderizar.sh'), 'w', newline='\n').write(sh)   # LF: com CRLF (Windows) o bash quebra na 1ª linha
+os.chmod(os.path.join(R, 'renderizar.sh'), 0o755)
 print(f'render: bash {R}/renderizar.sh  → {final}')

@@ -81,7 +81,7 @@ if '--render' in sys.argv:
     os.makedirs(os.path.join(P, 'prontos'), exist_ok=True); bruto = os.path.join(R, 'out', f'reel-{n}-bruto.mov'); final = os.path.join(P, 'prontos', f'reel-{n}.mp4')
     # 1) Remotion → ProRes HQ (quase sem perda); 2) H.264 CBR (bitrate constante = br: o dono pediu bitrate alto; o x264 só respeita mínimo em CBR)
     #    — com só "--video-bitrate" o codificador gastava bem menos em cena fácil (saíram de 7,7 a 23 Mb/s).
-    subprocess.run(['npx', 'remotion', 'render', f'Reel{n}', bruto, '--codec=prores', '--prores-profile=hq', '--log=error'], cwd=R, check=True)
+    subprocess.run([shutil.which('npx') or 'npx', 'remotion', 'render', f'Reel{n}', bruto, '--codec=prores', '--prores-profile=hq', '--log=error'], cwd=R, check=True)
     med = subprocess.run(['ffmpeg', '-v', 'info', '-i', bruto, '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json', '-f', 'null', '-'], capture_output=True, text=True).stderr
     Lm = json.loads(med[med.rindex('{'):med.rindex('}') + 1])
     ln = (f"loudnorm=I=-14:TP=-1.5:LRA=11:measured_I={Lm['input_i']}:measured_TP={Lm['input_tp']}:measured_LRA={Lm['input_lra']}"

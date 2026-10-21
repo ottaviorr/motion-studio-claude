@@ -21,6 +21,8 @@
 set -e
 [ $# -ge 2 ] || { sed -n 2,20p "$0"; exit 1; }
 AQUI="$(cd "$(dirname "$0")" && pwd)"
+# python: o do estúdio se houver (no Git Bash do Windows, "python3" costuma ser o atalho da Microsoft Store)
+PY=python3; for p in "$AQUI/../../../.ferramentas/.venv/bin/python" "$HOME/.claude/skills/motion-design/../../.ferramentas/.venv/bin/python"; do [ -x "$p" ] && { PY="$p"; break; }; done
 CENA="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"; SAIDA="$2"; shift 2
 FPS=30; SUB=""; OBT=0.5; ESCALA=1; CRF=14; MANTER=""
 while [ $# -gt 0 ]; do case "$1" in
@@ -31,7 +33,7 @@ while [ $# -gt 0 ]; do case "$1" in
 export NODE_PATH="${NODE_PATH:-$HOME/motion-studio/.ferramentas/node_modules}"
 
 # contas: fps de cada passada (S subquadros por quadro final em cada uma), quantos entram na média (N) e o deslocamento
-read PF S N DES < <(python3 -c "
+read PF S N DES < <("$PY" -c "
 f,s,o=$FPS,$SUB,$OBT
 S=s//2; pf=f*S
 assert s%2==0 and s>=2, '--sub precisa ser par'
@@ -39,14 +41,14 @@ assert pf<=240, f'cada passada ficaria a {pf} fps (máximo do HyperFrames: 240).
 N=max(1,min(S,round(S*o)))
 print(pf,S,N,repr(1/(2*pf)))")
 [ -n "$PF" ] || exit 1
-echo "desfoque: 2 passadas a $PF fps, média de $N+$N subquadros por quadro (obturador $(python3 -c "print(round($N/$S*360))")°), saída $FPS fps"
+echo "desfoque: 2 passadas a $PF fps, média de $N+$N subquadros por quadro (obturador $("$PY" -c "print(round($N/$S*360))")°), saída $FPS fps"
 
 R="${MANTER:-$(mktemp -d)}"; mkdir -p "$R"
 P2HTML="$(dirname "$CENA")/.desfoque-$(basename "$CENA" .html)-$$.html"   # ao lado da cena: caminhos relativos continuam valendo
 trap 'rm -f "$P2HTML"; [ -z "$MANTER" ] && rm -rf "$R"' EXIT
 
 # cópia da cena com o deslocamento (python para não depender de sed do macOS)
-python3 - "$CENA" "$P2HTML" "$DES" <<'PY'
+"$PY" - "$CENA" "$P2HTML" "$DES" <<'PY'
 import sys, re
 src, dst, d = sys.argv[1], sys.argv[2], sys.argv[3]
 h = open(src, encoding='utf8').read()

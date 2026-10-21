@@ -29,7 +29,8 @@ if not ok: print('→ ritmo NÃO constante (ou áudio desalinhado): sem normaliz
 faixa = 'pc' if i['faixa'] == 'pc' else 'tv'
 vf = (f'fps={FPS}:start_time=0:round=near,'
       f'scale=in_range={faixa}:out_range=tv:in_color_matrix=bt709:out_color_matrix=bt709:flags=lanczos,format=yuv420p,setsar=1')
-enc = ((['-c:v', 'h264_videotoolbox'] if P.MAC else ['-c:v', 'h264_nvenc', '-preset', 'p5']) + ['-b:v', '60M', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-g', str(FPS), *P.COR] if '--rapido' in a
+enc = ((['-c:v', 'h264_videotoolbox'] if P.MAC else ['-c:v', 'h264_nvenc', '-preset', 'p5']) + ['-b:v', '60M', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-g', str(FPS), *P.COR]
+       if '--rapido' in a and (P.MAC or P.NVENC)
        else P.V_INTER)
 P.fila()   # é uma codificação pesada: entra na fila global de render
 t0 = time.time()

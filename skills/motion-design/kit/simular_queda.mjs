@@ -13,12 +13,14 @@ import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
 const req = createRequire(import.meta.url);
-const tentar = [process.env.NODE_PATH, path.join(os.homedir(), "motion-studio/.ferramentas/node_modules")].filter(Boolean);
+const aqui = path.dirname(fileURLToPath(import.meta.url));
+const tentar = [process.env.NODE_PATH, path.resolve(aqui, "../../../.ferramentas/node_modules"), path.join(os.homedir(), "motion-studio/.ferramentas/node_modules")].filter(Boolean);
 let Matter;
 for (const p of [null, ...tentar]) { try { Matter = p ? req(path.join(p, "matter-js")) : req("matter-js"); break; } catch {} }
-if (!Matter) { console.error("matter-js não encontrado (instale em ~/motion-studio/.ferramentas: npm i matter-js@0.20.0)"); process.exit(1); }
+if (!Matter) { console.error("matter-js não encontrado (rode bash instalar.sh, ou em .ferramentas: npm i matter-js@0.20.0)"); process.exit(1); }
 
 const arq = process.argv[2];
 if (!arq) { console.error("uso: node simular_queda.mjs queda.json [-o fisica.json]"); process.exit(1); }
@@ -37,7 +39,7 @@ const semMedida = C.corpos.filter((c) => c.texto && (c.w == null || c.h == null)
 if (semMedida.length) {
   if (!C.fonte) { console.error('corpos com "texto" e sem w/h precisam de "fonte" (ex.: "900 150px Archivo")'); process.exit(1); }
   let pw; for (const p of [null, ...tentar]) { try { pw = p ? req(path.join(p, "playwright-core")) : req("playwright-core"); break; } catch {} }
-  const chrome = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/usr/bin/google-chrome"].find((x) => fs.existsSync(x));
+  const chrome = [process.env.CHROME, "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "C:/Program Files/Google/Chrome/Application/chrome.exe", "/usr/bin/google-chrome"].filter(Boolean).find((x) => fs.existsSync(x));
   const nav = await pw.chromium.launch({ executablePath: chrome, headless: true });
   const pg = await nav.newPage();
   const fam = (C.fonte.match(/\d+px\s+(.+)$/) || [])[1]?.replace(/['"]/g, "");

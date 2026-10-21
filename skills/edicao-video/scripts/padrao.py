@@ -2,7 +2,7 @@
   1920×1080 · 30 fps constante · H.264 High · 18 Mb/s constante (CBR, nunca abaixo de 16) · AAC 320 k 48 kHz · -14 LUFS · BT.709
 Sincronia por construção: bruto normalizado (normalizar.py) → cortes no quadro de 30 fps (plano.py) → áudio em PCM até o fim
 (uma única codificação AAC, no final). Importe daqui; não copie os números para outro lugar."""
-import os, sys, json, subprocess, time, atexit
+import os, sys, json, shutil, subprocess, time, atexit
 
 FPS = 30
 W, H = 1920, 1080
@@ -17,8 +17,9 @@ V_FINAL = ['-c:v', 'libx264', '-preset', 'medium', '-profile:v', 'high', '-pix_f
 # hardware de vídeo da máquina: Mac = VideoToolbox; Windows/Linux com NVIDIA = CUDA (decodifica) + NVENC (codifica); sem nada, CPU
 MAC = sys.platform == 'darwin'
 _ff = lambda *a: subprocess.run(['ffmpeg', '-hide_banner', *a], capture_output=True, text=True).stdout
-NVENC = not MAC and 'h264_nvenc' in _ff('-encoders')
-HWDEC = ['-hwaccel', 'videotoolbox'] if MAC else ['-hwaccel', 'cuda'] if 'cuda' in _ff('-hwaccels') else []
+NVIDIA = not MAC and shutil.which('nvidia-smi') is not None   # o ffmpeg lista nvenc/cuda mesmo sem a placa: confere a placa
+NVENC = NVIDIA and 'h264_nvenc' in _ff('-encoders')
+HWDEC = ['-hwaccel', 'videotoolbox'] if MAC else ['-hwaccel', 'cuda'] if NVIDIA and 'cuda' in _ff('-hwaccels') else []
 # prévia para assistir: codificador de hardware (segundos, não minutos)
 V_PREVIA = (['-c:v', 'h264_videotoolbox', '-b:v', '8M'] if MAC else ['-c:v', 'h264_nvenc', '-preset', 'p4', '-b:v', '8M'] if NVENC
             else ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '23']) + ['-profile:v', 'high', '-pix_fmt', 'yuv420p', *COR]
